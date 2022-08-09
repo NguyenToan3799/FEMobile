@@ -8,14 +8,47 @@ import Submit from '../components/Submit';
 import moment from "moment";
 import DatePicker from 'react-native-neat-date-picker';
 
+const nextDate = (dayIndex) => {
+  let today = new Date();
+  today.setDate(today.getDate() + (dayIndex - 1 - today.getDay() + 7) % 7 + 1);
+  return today;
+}
 
+const padTo2Digits = (num) => {
+  return num.toString().padStart(2, '0');
+}
 
-
+const formatDate = (date) => {
+  return [
+    padTo2Digits(date.getDate()),
+    padTo2Digits(date.getMonth() + 1),
+    date.getFullYear(),
+  ].join('/');
+}
 
 const Dangkylich = props => {
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState();
+
+  const nextMonday = nextDate(1);
+  const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
+  const nextSaturday = new Date();
+  nextSaturday.setDate(nextMonday.getDate() + 5);
+
+  const shiftData = ["Ca 1", "Ca 2", "Ca 3"];
+
+  const nextSaturdayString = `${nextSaturday.getDate()}/${nextSaturday.getMonth() + 1}`;
+
+  let selectedShift = {};
+
+
+  const setSelectedShift = (dateDelta, shift) => {
+    let date = new Date();
+    date.setDate(nextMonday.getDate() + dateDelta);
+    selectedShift[formatDate(date)] = shift;
+    console.log(selectedShift);
+  }
 
   const openDatePicker = () => {
     setShowDatePicker(true)
@@ -37,7 +70,98 @@ const Dangkylich = props => {
     setShowDatePicker(false);
   }
 
+  // util
+  const showConfirmDialog = (message, callback) => {
+    return Alert.alert(
+      "Are your sure?",
+      "Are you sure you want to remove this beautiful box?",
+      [
+        // The "Yes" button
+        {
+          text: "Yes",
+          onPress: () => {
+            setShowBox(false);
+            
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "No",
+        },
+      ]
+    );
+  };
 
+  // util
+  const createAlert = (title, message) =>
+    Alert.alert(
+      title,
+      message,
+      [
+        { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+      ]
+    );
+
+  // util
+  const generateIdByNum = (length) => {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < length; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
+
+  const postRegistrationData = async () => {
+    for (let date in selectedShift) {
+      // util
+      let shiftId = generateIdByNum(10);
+      let requestBody = {
+        "allday": false,
+        "date": date,
+        "registrationScheduleID": "31",
+        "shift1": selectedShift[date] == 1,
+        "shift2": selectedShift[date] == 2,
+        "shift3": selectedShift[date] == 3,
+        "userID": "toan"
+      };
+
+      console.log(requestBody);
+
+      const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: requestBody,
+      });
+
+      response.json().then(data => {
+        console.log(data);
+      });
+
+      /*
+      fetch('http://api.ngocsonak.xyz:8181/api/registrationschedule/create', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      })
+        .then((response) => { console.log(1); response.json(); })
+        .then((responseJson) => {
+          Alert.alert("POST SUCCESS:  " + date);
+          console.log(responseJson);
+        })
+        .catch((error) => {
+          console.error(error);
+        });*/
+    }
+
+    createAlert("Notification", "You have successfully registered schedule for next week!");
+  }
 
   return (
 
@@ -49,7 +173,7 @@ const Dangkylich = props => {
             <View style={{ width: '20%', height: '100%' }}>
               <Icon style={{ marginTop: 35, marginLeft: 20 }}
                 name={'chevron-left'}
-                size={30} 
+                size={30}
                 color={'black'}
                 onPress={() => { props.navigation.push('Trangchu') }}
               />
@@ -84,8 +208,9 @@ const Dangkylich = props => {
               />
             </View>
             <View style={{ width: '60%', height: '100%' }}>
-              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }} onPress={openDatePicker}> Week</Text>
-              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }} onPress={openDatePicker} > {date?.startDateString}-{date?.endDateString}</Text>
+              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
+              {/* <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }} onPress={openDatePicker} > {date?.startDateString}-{date?.endDateString}</Text> */}
+              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }}>{nextMondayString} - {nextSaturdayString}</Text>
             </View>
             <View style={{ width: '20%', height: '100%' }}>
               <Icon style={{ marginTop: 25, marginLeft: 20 }}
@@ -106,10 +231,9 @@ const Dangkylich = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select shift"
-                  data={["Ca 1", "Ca 2", "Ca 3"]}
+                  data={shiftData}
                   onSelect={(selectedItem, index) => {
-                    const a = {selectedItem: selectedItem, d: 'monday'}
-                    console.log(a)
+                    setSelectedShift(0, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem) => {
 
@@ -133,9 +257,9 @@ const Dangkylich = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select shift"
-                  data={["Ca 1", "Ca 2", "Ca 3"]}
+                  data={shiftData}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
+                    setSelectedShift(1, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 
@@ -159,9 +283,9 @@ const Dangkylich = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select shift"
-                  data={["Ca 1", "Ca 2", "Ca 3"]}
+                  data={shiftData}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
+                    setSelectedShift(2, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 
@@ -185,9 +309,9 @@ const Dangkylich = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select shift"
-                  data={["Ca 1", "Ca 2", "Ca 3"]}
+                  data={shiftData}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
+                    setSelectedShift(3, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 
@@ -211,9 +335,9 @@ const Dangkylich = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select shift"
-                  data={["Ca 1", "Ca 2", "Ca 3"]}
+                  data={shiftData}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
+                    setSelectedShift(4, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 
@@ -237,9 +361,9 @@ const Dangkylich = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select shift"
-                  data={["Ca 1", "Ca 2", "Ca 3"]}
+                  data={shiftData}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
+                    setSelectedShift(5, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 
@@ -261,7 +385,30 @@ const Dangkylich = props => {
           <View style={styles.container}>
             <Submit title="Confirm" color="#A1C639"
               onPress={() => {
-                props.navigation.push('Trangchu');
+
+                Alert.alert(
+                  "Warning",
+                  "You cannot register another schedule after you submit. Do you wish to register schedule?",
+                  [
+                    // The "No" button
+                    // Does nothing but dismiss the dialog when tapped
+                    {
+                      text: "No",
+                    },
+                    // The "Yes" button
+                    {
+                      text: "Yes",
+                      onPress: () => {
+                        postRegistrationData();
+                        console.log(2);
+                      },
+                    },
+                    
+                  ]
+                );
+
+
+                // 
               }} />
           </View>
         </ScrollView>
@@ -281,9 +428,9 @@ const Dangkylich = props => {
           <View style={styles.modalView}>
             <SelectDropdown
               defaultButtonText="Vui lòng chọn ca"
-              data={["Ca 1", "Ca 2", "Ca 3"]}
+              data={shiftData}
               onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index)
+                setSelectedShift(0, index + 1);
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
                 // text represented after item is selected
