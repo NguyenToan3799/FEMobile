@@ -81,7 +81,7 @@ const Dangkylich = props => {
           text: "Yes",
           onPress: () => {
             setShowBox(false);
-            
+
           },
         },
         // The "No" button
@@ -99,7 +99,8 @@ const Dangkylich = props => {
       title,
       message,
       [
-        { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+        // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+        { text: "OK", onPress: () => console.log(1) }
       ]
     );
 
@@ -115,11 +116,23 @@ const Dangkylich = props => {
   const postRegistrationData = async () => {
     for (let date in selectedShift) {
       // util
-      let shiftId = generateIdByNum(10);
+      let shiftId = generateIdByNum(7);
+      console.log(shiftId);
+
+      // let requestBody = {
+      //   "allday": false,
+      //   "date": "02/08/2022",
+      //   "registrationScheduleID": shiftId,
+      //   "shift1": true,
+      //   "shift2": false,
+      //   "shift3": false,
+      //   "userID": "toan"
+      // };
+
       let requestBody = {
         "allday": false,
         "date": date,
-        "registrationScheduleID": "31",
+        "registrationScheduleID": shiftId,
         "shift1": selectedShift[date] == 1,
         "shift2": selectedShift[date] == 2,
         "shift3": selectedShift[date] == 3,
@@ -131,30 +144,32 @@ const Dangkylich = props => {
       const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          'Accept': '*/*',
           'Content-Type': 'application/json'
         },
-        body: requestBody,
+        body: JSON.stringify(requestBody),
       });
 
-      response.json().then(data => {
-        console.log(data);
-      });
+      console.log(response);
+      console.log(3);
+      // response.json().then(data => {
+      //   console.log(data);
+      // });
 
       /*
       fetch('http://api.ngocsonak.xyz:8181/api/registrationschedule/create', {
         method: 'POST',
         headers: {
-          Accept: 'application/json',
+          Accept: '',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
       })
-        .then((response) => { console.log(1); response.json(); })
-        .then((responseJson) => {
-          Alert.alert("POST SUCCESS:  " + date);
-          console.log(responseJson);
-        })
+        .then((response) => { console.log(response);})
+        // .then((responseJson) => {
+        //   Alert.alert("POST SUCCESS:  " + date);
+        //   console.log(responseJson);
+        // })
         .catch((error) => {
           console.error(error);
         });*/
@@ -403,7 +418,7 @@ const Dangkylich = props => {
                         console.log(2);
                       },
                     },
-                    
+
                   ]
                 );
 
