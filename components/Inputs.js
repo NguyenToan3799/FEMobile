@@ -6,9 +6,14 @@ import {Input} from 'react-native-elements';
 class Inputs extends Component {
     state = {isFocused: false};
     
-    onFocousChange = () => {
+    onFocusChange = () => {
         this.setState({isFocused: true})
     }
+
+    getInputValue(value) {
+        this.props.callback(value);
+    }
+
     render() {
         return(
             <View 
@@ -16,7 +21,8 @@ class Inputs extends Component {
              ? '#0779ef': '#eee'}]}>
                  <Input 
                     placeholder={this.props.name}
-                    onFocus={this.onFocousChange}
+                    onChangeText={this.props.callback}
+                    onFocus={this.onFocusChange}
                     inputContainerStyle={styles.inputContainer}
                     inputStyle={styles.inputText}
                     secureTextEntry={this.props.pass}

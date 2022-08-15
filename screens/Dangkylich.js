@@ -119,15 +119,6 @@ const Dangkylich = props => {
       let shiftId = generateIdByNum(7);
       console.log(shiftId);
 
-      // let requestBody = {
-      //   "allday": false,
-      //   "date": "02/08/2022",
-      //   "registrationScheduleID": shiftId,
-      //   "shift1": true,
-      //   "shift2": false,
-      //   "shift3": false,
-      //   "userID": "toan"
-      // };
 
       let requestBody = {
         "allday": false,
@@ -149,30 +140,6 @@ const Dangkylich = props => {
         },
         body: JSON.stringify(requestBody),
       });
-
-      console.log(response);
-      console.log(3);
-      // response.json().then(data => {
-      //   console.log(data);
-      // });
-
-      /*
-      fetch('http://api.ngocsonak.xyz:8181/api/registrationschedule/create', {
-        method: 'POST',
-        headers: {
-          Accept: '',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      })
-        .then((response) => { console.log(response);})
-        // .then((responseJson) => {
-        //   Alert.alert("POST SUCCESS:  " + date);
-        //   console.log(responseJson);
-        // })
-        .catch((error) => {
-          console.error(error);
-        });*/
     }
 
     createAlert("Notification", "You have successfully registered schedule for next week!");
