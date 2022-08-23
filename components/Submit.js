@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 
 const Submit = props => {
     return (
-        <TouchableOpacity onPress={props.onPress} style={[styles.container, {backgroundColor: props.color}]} >
+        <TouchableOpacity onPress={props.onPress} disabled={!props.enable} style={[styles.container, {backgroundColor: props.color}]} >
             <Text style={styles.submitText}>{props.title}</Text>
         </TouchableOpacity>
     );

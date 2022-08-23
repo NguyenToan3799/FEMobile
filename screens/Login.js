@@ -1,35 +1,36 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, ScrollView, KeyboardAvoidingView, StatusBar } from 'react-native';
-import { Button } from "react-native-elements";
+import { View, StyleSheet, Text, Image, ScrollView, KeyboardAvoidingView, StatusBar, Alert } from 'react-native';
+// import { Button } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {saveUserInfo} from '../utils/AsyncStorage';
 
 import Inputs from '../components/Inputs';
 import Submit from '../components/Submit';
 const Login = (props) => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
+    const [isEnableButton, setEnableButton] = useState(false);
 
-    const getUsername = (username) => {
-        setUsername(username);
+    const getUsername = async (value) => {
+        setUsername(value);
+        console.log(username + '---' + password + '---');
+        checkEnableButton();
     }
 
-    const getPassword = (password) => {
-        setPassword(password);
+    const getPassword = (value) => {
+        setPassword(value);
+        checkEnableButton(); 
+    }
+
+    const checkEnableButton = () => {
+        console.log('Check ' + username + '---' + password + '---');
+        if ([null, undefined, ''].includes(username) || [null, undefined, ''].includes(password)) { setEnableButton(false) }
+        else { setEnableButton(true); }
+        console.log(isEnableButton);
     }
 
     const checkLoginInfo = async () => {
-        let requestBody = {
-            "userID": username,
-            "password": password
-        };
-        console.log(1);
-        // const response = await fetch(`http://api.ngocsonak.xyz:8181/api/user/login?password=${password}&userID=${username}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': '*/*',
-        //         // 'Content-Type': 'application/json'
-        //     },
-        // });
+
 
         fetch(`http://api.ngocsonak.xyz:8181/api/user/login?password=${password}&userID=${username}`, {
             method: 'POST',
@@ -39,12 +40,10 @@ const Login = (props) => {
         })
             .then(response => response.json())
             .then(result => {
-                console.log('User in DB created');
-                console.log(result.data``);
+                saveUserInfo(result).then(() => props.navigation.push('Trangchu'));
             })
             .catch(error => console.log('error', error));
 
-        // console.log(response);
     }
 
     return (
@@ -74,10 +73,9 @@ const Login = (props) => {
                             <Text style={styles.textForgot}
                             > Forgot Password?</Text>
                         </View>
-                        <Submit title="LOG IN" color="white"
+                        <Submit title="LOG IN" color={isEnableButton==true?"white":"gray"} enable={isEnableButton}
                             onPress={() => {
                                 checkLoginInfo();
-                                // props.navigation.push('Trangchu');
                             }} />
 
 

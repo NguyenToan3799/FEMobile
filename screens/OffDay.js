@@ -6,18 +6,99 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DateRangePicker from "react-native-daterange-picker";
 import Submit from '../components/Submit';
 import moment from "moment";
+import { Button } from "react-native-elements";
+import { getUserInfo } from "../utils/AsyncStorage";
+
+const nextDate = (dayIndex) => {
+  let today = new Date();
+  today.setDate(today.getDate() + (dayIndex - 1 - today.getDay() + 7) % 7 + 1);
+  return today;
+}
+
+const formatDate = (date) => {
+  return [
+    padTo2Digits(date.getDate()),
+    padTo2Digits(date.getMonth() + 1),
+    date.getFullYear(),
+  ].join('/');
+}
 
 const OffDay = props => {
-  
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRange, setRange] = useState({});
-  
+  const [selectedDate, setSelectedDate] = useState(undefined);
+
+  const nextMonday = nextDate(1);
+  const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
+  const nextSaturday = new Date();
+  nextSaturday.setDate(nextMonday.getDate() + 5);
+
+  const nextSaturdayString = `${nextSaturday.getDate()}/${nextSaturday.getMonth() + 1}`;
+
+  const setOffDay = (dateDelta) => {
+    let offDay = new Date();
+    offDay.setDate(nextMonday.getDate() + dateDelta);
+    setSelectedDate(offDay);
+  }
+
+  const createAlert = (title, message, route) =>
+    Alert.alert(
+      title,
+      message,
+      [
+        // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+        { text: "OK", onPress: () => props.navigation.push(route) }
+      ]
+    );
+
+  const generateIdByNum = (length) => {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < length; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
+
+  const postRegistrationData = async () => {
+    let userInfo = await getUserInfo();
+    let userId = userInfo["userID"];
+
+    // util
+    let shiftId = generateIdByNum(7);
+    console.log(shiftId);
+
+
+    let requestBody = {
+      "allday": true,
+      "date": selectedDate,
+      "registrationScheduleID": shiftId,
+      "shift1": false,
+      "shift2": false,
+      "shift3": false,
+      "userID": userId
+    };
+
+    console.log(requestBody);
+
+    const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+      method: 'POST',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    createAlert("Notification", "You have successfully registered off day for next week!", "Trangchu");
+  }
+
   return (
-   
+
     <>
       <SafeAreaView>
         <ScrollView>
-          
+
           <View style={[styles.container, { backgroundColor: '#A1C639', height: 100, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
               <Icon style={{ marginTop: 35, marginLeft: 20 }}
@@ -45,8 +126,8 @@ const OffDay = props => {
               />
             </View>
             <View style={{ width: '60%', height: '100%' }}>
-              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
-              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}> 23/5-29/5</Text>
+              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}>Week</Text>
+              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}>{nextMondayString} - {nextSaturdayString}</Text>
             </View>
             <View style={{ width: '20%', height: '100%' }}>
               <Icon style={{ marginTop: 25, marginLeft: 20 }}
@@ -57,15 +138,18 @@ const OffDay = props => {
               />
             </View>
           </View>
-          <View style={[styles.viewsigup, {  borderWidth: 2, height: 70, flexDirection: 'row' }]}>
-            
+          <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
+
             <View style={{ width: '60%', height: '100%' }}>
-              <View style={{  height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
+              <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select day off"
                   data={["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"]}
                   onSelect={(selectedItem, index) => {
-                    console.log(selectedItem)
+                    setOffDay(index);
+                    console.log(1)
+                    console.log(selectedDate)
+
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 
@@ -79,12 +163,31 @@ const OffDay = props => {
               </View>
             </View>
           </View>
-          
-          
+
+
           <View style={styles.container}>
-            <Submit title="Confirm" color="#A1C639"
+            <Button disabled={selectedDate == undefined} title="Confirm" color="#A1C639"
               onPress={() => {
-                props.navigation.push('Trangchu');
+                Alert.alert(
+                  "Warning",
+                  "You cannot register another day off after you submit. Do you wish to register day off?",
+                  [
+                    // The "No" button
+                    // Does nothing but dismiss the dialog when tapped
+                    {
+                      text: "No",
+                    },
+                    // The "Yes" button
+                    {
+                      text: "Yes",
+                      onPress: () => {
+                        postRegistrationData();
+                      },
+                    },
+
+                  ]
+                );
+                
               }} />
           </View>
         </ScrollView>
@@ -138,7 +241,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    
+
   },
   viewsigup: {
     flex: 1,

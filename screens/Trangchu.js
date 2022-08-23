@@ -4,9 +4,39 @@ import { Button } from "react-native-elements";
 import { color } from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { getUserInfo } from '../utils/AsyncStorage';
 
 
-const Trangchu = props => {
+const Trangchu = (props) => {
+    // const userInfo = props.userInfo;
+    // const userInfo = await getUserInfo();
+    const [userInfo, setUserInfo] = useState({
+        "address": "Sky 9 Lien Phuong",
+        "dayOfBirth": "03/07/1999",
+        "email": "toan@fpt.edu.vn",
+        "fullName": "Toan",
+        "password": "123",
+        "phoneNumber": "1234123123",
+        "role": {
+            "id": "3",
+            "name": "EMPLOYEE_FULLTIME"
+        },
+        "sex": "Nam",
+        "status": true,
+        "store": {
+            "address": "51 Do Xuan Hop",
+            "storeID": "dxh",
+            "storeName": "Do Xuan Hop"
+        },
+        "userID": "toan",
+        "userName": "Song Toan"
+    });
+
+    getUserInfo().then(info => setUserInfo(info)).catch(error => console.log(error));
+
+    const roleName = userInfo.role.name;
+    const roleText = roleName === 'EMPLOYEE_FULLTIME' ? 'Nhân viên Fulltime' : 'Nhân viên Partime';
     return (
         <SafeAreaView >
             <ScrollView>
@@ -17,12 +47,12 @@ const Trangchu = props => {
                         style={styles.image1}
                     /></View>
                     <View style={{ width: '60%', height: '100%' }}>
-                        <Text style={[styles.textName, { marginVertical: 10, }]}>Song Toan </Text>
-                        <Text style={[styles.textName, { textDecorationLine: 'underline' }]}>Nhân viên </Text>
+                        <Text style={[styles.textName, { marginVertical: 10, }]}>{userInfo.fullName}</Text>
+                        <Text style={[styles.textName, { /*textDecorationLine: 'underline'*/ }]}>{roleText}</Text>
                     </View>
                     <View style={{ width: '20%', height: '100%' }}>
                         <Text style={{ color: '#696969', marginTop: 15, textAlign: 'center', fontSize: 20 }}
-                            onPress={() => { props.navigation.push('Home') }}  >Logout</Text>
+                            onPress={() => { props.navigation.push('Home'); console.log(userInfo.fullName) }}  >Logout</Text>
                         <Icon style={{ textAlign: 'center', margin: 10 }}
                             name={'bell-o'}
                             size={30}
@@ -64,18 +94,8 @@ const Trangchu = props => {
                         </View>
                     </View>
                 </View>
+
                 <View style={[styles.container1, { height: 200, flexDirection: 'row' }]}>
-                    <View style={{ width: '50%', height: '100%' }}>
-                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
-                            <Icon style={{ textAlign: 'center', margin: 15 }}
-                                name={'calendar-check-o'}
-                                size={100}
-                                color={'#FF4500'}
-                                onPress={() => { props.navigation.push('Dangkylich') }}
-                            />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Dangkylich') }}>Sign Up </Text>
-                        </View>
-                    </View>
                     <View style={{ width: '50%', height: '100%' }}>
                         <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
                             <Icon style={{ textAlign: 'center', margin: 15 }}
@@ -85,19 +105,6 @@ const Trangchu = props => {
                                 onPress={() => { props.navigation.push('Chungchi') }}
                             />
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Chungchi') }}>View Certificate </Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={[styles.container1, { height: 200, flexDirection: 'row' }]}>
-                    <View style={{ width: '50%', height: '100%' }}>
-                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
-                            <Icon style={{ textAlign: 'center', margin: 15 }}
-                                name={'calendar-times-o'}
-                                size={100}
-                                color={'black'}
-                                onPress={() => { props.navigation.push('OffDay') }}
-                            />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('OffDay') }}>Regist Off Day</Text>
                         </View>
                     </View>
                     <View style={{ width: '50%', height: '100%' }}>
@@ -136,7 +143,30 @@ const Trangchu = props => {
                         </View>
                     </View>
                 </View>
-                
+                <View style={[styles.container1, { height: 200, flexDirection: 'row' }]}>
+                    {roleName === "EMPLOYEE_PARTIME" ? (<View style={{ width: '50%', height: '100%' }}>
+                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
+                            <Icon style={{ textAlign: 'center', margin: 15 }}
+                                name={'calendar-check-o'}
+                                size={100}
+                                color={'#FF4500'}
+                                onPress={() => { props.navigation.push('Dangkylich') }}
+                            />
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Dangkylich') }}>Sign Up </Text>
+                        </View>
+                    </View>) : null}
+                    {roleName == "EMPLOYEE_FULLTIME" ? (<View style={{ width: '50%', height: '100%' }}>
+                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
+                            <Icon style={{ textAlign: 'center', margin: 15 }}
+                                name={'calendar-times-o'}
+                                size={100}
+                                color={'black'}
+                                onPress={() => { props.navigation.push('OffDay') }}
+                            />
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('OffDay') }}>Regist Off Day</Text>
+                        </View>
+                    </View>) : null}
+                </View>
             </ScrollView>
         </SafeAreaView>
     )

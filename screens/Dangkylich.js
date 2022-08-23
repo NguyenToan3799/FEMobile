@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, ScrollView, Modal, Pressable, Alert, Button } from 'react-native';
+import { View, StyleSheet, Text, Image, ScrollView, Modal, Pressable, Alert } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Submit from '../components/Submit';
 import moment from "moment";
 import DatePicker from 'react-native-neat-date-picker';
+import { Button } from "react-native-elements";
+import { getUserInfo } from '../utils/AsyncStorage';
 
 const nextDate = (dayIndex) => {
   let today = new Date();
@@ -27,7 +29,7 @@ const formatDate = (date) => {
 }
 
 const Dangkylich = props => {
-  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState();
 
@@ -94,13 +96,13 @@ const Dangkylich = props => {
   };
 
   // util
-  const createAlert = (title, message) =>
+  const createAlert = (title, message, route) =>
     Alert.alert(
       title,
       message,
       [
         // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
-        { text: "OK", onPress: () => console.log(1) }
+        { text: "OK", onPress: () => props.navigation.push(route) }
       ]
     );
 
@@ -114,6 +116,9 @@ const Dangkylich = props => {
   }
 
   const postRegistrationData = async () => {
+    let userInfo = await getUserInfo();
+    let userId = userInfo.userID;
+
     for (let date in selectedShift) {
       // util
       let shiftId = generateIdByNum(7);
@@ -127,7 +132,7 @@ const Dangkylich = props => {
         "shift1": selectedShift[date] == 1,
         "shift2": selectedShift[date] == 2,
         "shift3": selectedShift[date] == 3,
-        "userID": "toan"
+        "userID": userId
       };
 
       console.log(requestBody);
@@ -142,7 +147,7 @@ const Dangkylich = props => {
       });
     }
 
-    createAlert("Notification", "You have successfully registered schedule for next week!");
+    createAlert("Notification", "You have successfully registered schedule for next week!", "Trangchu");
   }
 
   return (
@@ -365,9 +370,8 @@ const Dangkylich = props => {
             <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>3.You can choose next week to register working day </Text>
           </View>
           <View style={styles.container}>
-            <Submit title="Confirm" color="#A1C639"
+            <Button title="Confirm" color="#a1C639"
               onPress={() => {
-
                 Alert.alert(
                   "Warning",
                   "You cannot register another schedule after you submit. Do you wish to register schedule?",

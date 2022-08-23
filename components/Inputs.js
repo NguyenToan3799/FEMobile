@@ -21,6 +21,7 @@ class Inputs extends Component {
              ? '#0779ef': '#eee'}]}>
                  <Input 
                     placeholder={this.props.name}
+                    defaultValue=''
                     onChangeText={this.props.callback}
                     onFocus={this.onFocusChange}
                     inputContainerStyle={styles.inputContainer}
