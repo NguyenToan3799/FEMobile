@@ -1,21 +1,29 @@
 {
-    "address": "Sky 9 Lien Phuong",
-    "dayOfBirth": "03/07/1999",
-    "email": "toan@fpt.edu.vn",
-    "fullName": "Nguyen Song Toan",
-    "password": "123",
-    "phoneNumber": "1234123123",
-    "role": {
-        "id": "3",
-        "name": "EMPLOYEE_FULLTIME"
-    },
-    "sex": "Nam",
-    "status": true,
-    "store": {
-        "address": "51 Do Xuan Hop",
-        "storeID": "dxh",
-        "storeName": "Do Xuan Hop"
-    },
-    "userID": "toan",
-    "userName": "Song Toan"
+    "allday": true,
+    "date": "2022-09-04T12:14:01.524Z",
+    "registrationScheduleID": "VXfj7iF",
+    "shift1": false,
+    "shift2": false,
+    "shift3": false,
+    "user": {
+        "address": "Sky 9 Lien Phuong",
+        "dayOfBirth": "03/07/1999",
+        "email": "toan@fpt.edu.vn",
+        "fullName": "Nguyen Song Toan",
+        "password": "123",
+        "phoneNumber": "1234123123",
+        "role": {
+            "id": "3",
+            "name": "EMPLOYEE_FULLTIME"
+        },
+        "sex": "Nam",
+        "status": true,
+        "store": {
+            "address": "51 Do Xuan Hop",
+            "storeID": "dxh",
+            "storeName": "Do Xuan Hop"
+        },
+        "userID": "toan",
+        "userName": "Song Toan"
+    }
 }

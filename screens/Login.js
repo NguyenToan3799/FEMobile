@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, ScrollView, KeyboardAvoidingView, StatusBar, Alert } from 'react-native';
 // import { Button } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {saveUserInfo} from '../utils/AsyncStorage';
+import { saveUserInfo } from '../utils/AsyncStorage';
 
 import Inputs from '../components/Inputs';
 import Submit from '../components/Submit';
+import { color } from "react-native-reanimated";
 const Login = (props) => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [isEnableButton, setEnableButton] = useState(false);
+    const [isErrorMessageVisible, setIsErrorMessageVisible] = useState(false);
 
     const getUsername = async (value) => {
         setUsername(value);
@@ -19,7 +21,7 @@ const Login = (props) => {
 
     const getPassword = (value) => {
         setPassword(value);
-        checkEnableButton(); 
+        checkEnableButton();
     }
 
     const checkEnableButton = () => {
@@ -40,9 +42,10 @@ const Login = (props) => {
         })
             .then(response => response.json())
             .then(result => {
+                setIsErrorMessageVisible(false);
                 saveUserInfo(result).then(() => props.navigation.push('Trangchu'));
             })
-            .catch(error => console.log('error', error));
+            .catch(error => setIsErrorMessageVisible(true));
 
     }
 
@@ -68,12 +71,16 @@ const Login = (props) => {
 
                         <Inputs name="UserName" icon="user" callback={getUsername} />
                         <Inputs name="Password" icon="lock" pass={true} callback={getPassword} />
+                        {
+                            isErrorMessageVisible ? <Text style={styles.errorMessage}>Wrong username or password</Text> : null
+                        }
+
 
                         <View style={{ width: '90%' }}>
                             <Text style={styles.textForgot}
                             > Forgot Password?</Text>
                         </View>
-                        <Submit title="LOG IN" color={isEnableButton==true?"white":"gray"} enable={isEnableButton}
+                        <Submit title="LOG IN" color={isEnableButton == true ? "white" : "gray"} enable={isEnableButton}
                             onPress={() => {
                                 checkLoginInfo();
                             }} />
@@ -138,6 +145,11 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignSelf: 'flex-end'
     },
+    errorMessage: {
+        fontFamily: 'Arial',
+        fontSize: 18,
+        color: 'red',
+    }
 });
 
 export default Login

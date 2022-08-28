@@ -35,12 +35,12 @@ const Dangkylich = props => {
 
   const nextMonday = nextDate(1);
   const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
-  const nextSaturday = new Date();
-  nextSaturday.setDate(nextMonday.getDate() + 5);
+  const nextSunday = new Date();
+  nextSunday.setDate(nextMonday.getDate() + 6);
 
   const shiftData = ["Ca 1", "Ca 2", "Ca 3"];
 
-  const nextSaturdayString = `${nextSaturday.getDate()}/${nextSaturday.getMonth() + 1}`;
+  const nextSundayString = `${nextSunday.getDate()}/${nextSunday.getMonth() + 1}`;
 
   let selectedShift = {};
 
@@ -197,7 +197,7 @@ const Dangkylich = props => {
             <View style={{ width: '60%', height: '100%' }}>
               <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
               {/* <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }} onPress={openDatePicker} > {date?.startDateString}-{date?.endDateString}</Text> */}
-              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }}>{nextMondayString} - {nextSaturdayString}</Text>
+              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }}>{nextMondayString} - {nextSundayString}</Text>
             </View>
             <View style={{ width: '20%', height: '100%' }}>
               <Icon style={{ marginTop: 25, marginLeft: 20 }}
@@ -351,6 +351,32 @@ const Dangkylich = props => {
                   data={shiftData}
                   onSelect={(selectedItem, index) => {
                     setSelectedShift(5, index + 1);
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+
+                    return selectedItem
+                  }}
+                  rowTextForSelection={(item, index) => {
+
+                    return item
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+          <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
+            <View style={{ width: '20%', height: '100%' }}>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Chủ nhật </Text>
+              </View>
+            </View>
+            <View style={{ width: '60%', height: '100%' }}>
+              <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
+                <SelectDropdown
+                  defaultButtonText="Please select shift"
+                  data={shiftData}
+                  onSelect={(selectedItem, index) => {
+                    setSelectedShift(6, index + 1);
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
 

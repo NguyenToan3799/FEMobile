@@ -1,12 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Image, Alert } from 'react-native';
 import { Button } from "react-native-elements";
 import { color } from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
+import { isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek } from '../utils/Employee';
 
+const createAlert = (title, message) =>
+    Alert.alert(
+      title,
+      message,
+      [
+        // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+        { text: "OK"}
+      ]
+    );
 
 const Trangchu = (props) => {
     // const userInfo = props.userInfo;
@@ -33,10 +43,28 @@ const Trangchu = (props) => {
         "userName": "Song Toan"
     });
 
-    getUserInfo().then(info => setUserInfo(info)).catch(error => console.log(error));
+    getUserInfo().then(info => info != null ? setUserInfo(info): props.navigation.push('Home')).catch(error => console.log(error));
 
     const roleName = userInfo.role.name;
     const roleText = roleName === 'EMPLOYEE_FULLTIME' ? 'Nhân viên Fulltime' : 'Nhân viên Partime';
+    const userId = userInfo.userID;
+
+    const checkRegistrationInfo = async () => {
+        if (roleName == 'EMPLOYEE_FULLTIME') {
+            if (! await isRegisteredDayOffForNextWeek(userId)) {
+                props.navigation.push('OffDay');
+            } else {
+                createAlert("Notification", "You have registered day off for next week. You cannot register again!");
+            }
+        } else {
+            if (! await isRegisteredShiftForNextWeek(userId)) {
+                props.navigation.push('Dangkylich');
+            } else {
+                createAlert("Notification", "You have registered shifts for next week. You cannot register again!");
+            }
+        }
+    }
+
     return (
         <SafeAreaView >
             <ScrollView>
@@ -161,7 +189,7 @@ const Trangchu = (props) => {
                                 name={'calendar-times-o'}
                                 size={100}
                                 color={'black'}
-                                onPress={() => { props.navigation.push('OffDay') }}
+                                onPress={() => checkRegistrationInfo()}
                             />
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('OffDay') }}>Regist Off Day</Text>
                         </View>

@@ -31,15 +31,16 @@ const OffDay = props => {
 
   const nextMonday = nextDate(1);
   const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
-  const nextSaturday = new Date();
-  nextSaturday.setDate(nextMonday.getDate() + 5);
+  const nextSunday = new Date();
+  nextSunday.setDate(nextMonday.getDate() + 6);
 
-  const nextSaturdayString = `${nextSaturday.getDate()}/${nextSaturday.getMonth() + 1}`;
+  const nextSundayString = `${nextSunday.getDate()}/${nextSunday.getMonth() + 1}`;
 
   const setOffDay = (dateDelta) => {
     let offDay = new Date();
     offDay.setDate(nextMonday.getDate() + dateDelta);
     setSelectedDate(offDay);
+    console.log(selectedDate)
   }
 
   const createAlert = (title, message, route) =>
@@ -127,7 +128,7 @@ const OffDay = props => {
             </View>
             <View style={{ width: '60%', height: '100%' }}>
               <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}>Week</Text>
-              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}>{nextMondayString} - {nextSaturdayString}</Text>
+              <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}>{nextMondayString} - {nextSundayString}</Text>
             </View>
             <View style={{ width: '20%', height: '100%' }}>
               <Icon style={{ marginTop: 25, marginLeft: 20 }}
@@ -144,11 +145,11 @@ const OffDay = props => {
               <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
                 <SelectDropdown
                   defaultButtonText="Please select day off"
-                  data={["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"]}
+                  data={["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"]}
                   onSelect={(selectedItem, index) => {
                     setOffDay(index);
-                    console.log(1)
-                    console.log(selectedDate)
+                    console.log(index)
+                    
 
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
