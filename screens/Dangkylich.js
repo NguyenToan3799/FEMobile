@@ -391,9 +391,9 @@ const Dangkylich = props => {
             </View>
           </View>
           <View>
-            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>1.Please select the days you want to work to apply for work</Text>
-            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>2.You need to register at least 3 working days</Text>
-            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>3.You can choose next week to register working day </Text>
+            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5, color: "#FF0000" }}>Plan for week</Text>
+            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>Sinh nhat anh Lam cua hang can 8 ban dang ky vao ca 1</Text>
+            
           </View>
           <View style={styles.container}>
             <Button title="Confirm" color="#a1C639"
