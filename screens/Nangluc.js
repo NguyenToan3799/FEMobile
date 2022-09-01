@@ -26,7 +26,7 @@ const Nangluc = props => {
                     <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20 }}> Total Score: </Text>
                 </View>
                 <View style={[styles.container, { borderWidth: 2, borderColor: 'black', height: 400, marginTop: 10, backgroundColor: 'white' }]}>
-
+                   <View >abc</View>
                 </View>
                 <View style={styles.container}>
                     <Text style={{ fontFamily: 'Arial', fontSize: 30 }}>Congratulations 👏🏻</Text>

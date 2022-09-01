@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Submit from '../components/Submit';
 
-const Dangkylich = props => {
+const Xemlich = props => {
   return (
     <SafeAreaView>
       <ScrollView>
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Dangkylich;
+export default Xemlich;
