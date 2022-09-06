@@ -47,22 +47,7 @@ const Thongtinnv = props => {
 
                         </View>
                     </View>
-                    <View style={[styles.container, { height: 50, flexDirection: 'row' }]}>
-                        <View style={{ width: '27%', height: '100%' }}>
-                            <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>Position:</Text>
-                        </View>
-                        <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
-
-                        </View>
-                    </View>
-                    <View style={[styles.container, { height: 50, flexDirection: 'row' }]}>
-                        <View style={{ width: '27%', height: '100%' }}>
-                            <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>CMND:</Text>
-                        </View>
-                        <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
-
-                        </View>
-                    </View>
+                    
                     <View style={[styles.container, { height: 50, flexDirection: 'row' }]}>
                         <View style={{ width: '27%', height: '100%' }}>
                             <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>Address:</Text>
@@ -95,14 +80,7 @@ const Thongtinnv = props => {
 
                         </View>
                     </View>
-                    <View style={[styles.container, { height: 100, flexDirection: 'row' }]}>
-                        <View style={{ width: '27%', height: '100%' }}>
-                            <Text style={{ marginTop: 17, marginHorizontal: 15, fontFamily: 'Arial', fontSize: 15, width: 250 }}>Descripton:</Text>
-                        </View>
-                        <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 100, borderRadius: 10, marginRight: 15, width: 250 }}>
-
-                        </View>
-                    </View>
+                    
                     
                     <View style={styles.container}>
                         <Submit title="Edit" color="#A1C639"

@@ -22,9 +22,7 @@ const Thuong = props => {
                     </View>
 
                 </View>
-                <View style={[styles.container, { backgroundColor: '#D3D3D3', height: 100, borderWidth: 1, borderColor: 'red', borderRadius: 50, width: 200, alignSelf: 'center', marginTop: 10 }]}>
-                    <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20 }}> Total Score: </Text>
-                </View>
+                
                 <View style={[styles.container, { borderWidth: 2, borderColor: 'black', height: 400, marginTop: 10, backgroundColor: 'white' }]}>
 
                 </View>
