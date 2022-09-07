@@ -51,7 +51,6 @@ const Trangchu = (props) => {
 
     const checkRegistrationInfo = async () => {
         console.log('Checking registration info');
-        console.log(await isRegisteredDayOffForNextWeek(userId))
         if (roleName == 'EMPLOYEE_FULLTIME') {
             if (! await isRegisteredDayOffForNextWeek(userId)) {
                 props.navigation.push('OffDay');
@@ -60,7 +59,7 @@ const Trangchu = (props) => {
             }
         } else {
             if (! await isRegisteredShiftForNextWeek(userId)) {
-                // props.navigation.push('Dangkylich');
+                props.navigation.push('Dangkylich');
             } else {
                 createAlert("Notification", "You have registered shifts for next week. You cannot register again!");
             }
@@ -180,7 +179,7 @@ const Trangchu = (props) => {
                                 name={'calendar-check-o'}
                                 size={100}
                                 color={'#FF4500'}
-                                onPress={() => { props.navigation.push('Dangkylich') }}
+                                onPress={() => checkRegistrationInfo()}
                             />
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Dangkylich') }}>Sign Up </Text>
                         </View>
