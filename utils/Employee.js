@@ -3,11 +3,13 @@ import { nextDate } from './Utils';
 const checkRegistrationInfoForNextWeek = (data) => {
     const nextMonday = nextDate(1);
     nextMonday.setHours(0, 0, 0, 0);
-    const nextSunday = new Date();
+    let add = require('date-fns/add');
+    const nextSunday = add(nextMonday, {days: 6})
     nextSunday.setHours(23, 59, 59, 0);
-    nextSunday.setDate(nextMonday.getDate() + 6);
+    console.log(nextMonday, nextSunday);
     let check = false;
     data.forEach(record => {
+        console.log(record.date);
         let recordDate = new Date(record.date);
         if (recordDate >= nextMonday && recordDate <= nextSunday) check =  true;
     })

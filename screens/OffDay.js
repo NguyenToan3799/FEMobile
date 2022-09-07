@@ -31,14 +31,14 @@ const OffDay = props => {
 
   const nextMonday = nextDate(1);
   const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
-  const nextSunday = new Date();
-  nextSunday.setDate(nextMonday.getDate() + 6);
+  let add = require('date-fns/add');
+  const nextSunday = add(nextMonday, { days: 6 })
+  nextSunday.setHours(23, 59, 59, 0);
 
   const nextSundayString = `${nextSunday.getDate()}/${nextSunday.getMonth() + 1}`;
 
   const setOffDay = (dateDelta) => {
-    let offDay = new Date();
-    offDay.setDate(nextMonday.getDate() + dateDelta);
+    let offDay = nextDate(dateDelta + 1);
     setSelectedDate(offDay);
     console.log(selectedDate)
   }
@@ -149,7 +149,7 @@ const OffDay = props => {
                   onSelect={(selectedItem, index) => {
                     setOffDay(index);
                     console.log(index)
-                    
+
 
                   }}
                   buttonTextAfterSelection={(selectedItem, index) => {
@@ -188,7 +188,7 @@ const OffDay = props => {
 
                   ]
                 );
-                
+
               }} />
           </View>
         </ScrollView>

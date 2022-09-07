@@ -35,8 +35,9 @@ const Dangkylich = props => {
 
   const nextMonday = nextDate(1);
   const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
-  const nextSunday = new Date();
-  nextSunday.setDate(nextMonday.getDate() + 6);
+  let add = require('date-fns/add');
+  const nextSunday = add(nextMonday, { days: 6 })
+  nextSunday.setHours(23, 59, 59, 0);
 
   const shiftData = ["Ca 1", "Ca 2", "Ca 3"];
 
@@ -393,7 +394,7 @@ const Dangkylich = props => {
           <View>
             <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5, color: "#FF0000" }}>Plan for week</Text>
             <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>Sinh nhat anh Lam cua hang can 8 ban dang ky vao ca 1</Text>
-            
+
           </View>
           <View style={styles.container}>
             <Button title="Confirm" color="#a1C639"

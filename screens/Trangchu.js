@@ -50,6 +50,8 @@ const Trangchu = (props) => {
     const userId = userInfo.userID;
 
     const checkRegistrationInfo = async () => {
+        console.log('Checking registration info');
+        console.log(await isRegisteredDayOffForNextWeek(userId))
         if (roleName == 'EMPLOYEE_FULLTIME') {
             if (! await isRegisteredDayOffForNextWeek(userId)) {
                 props.navigation.push('OffDay');
@@ -58,7 +60,7 @@ const Trangchu = (props) => {
             }
         } else {
             if (! await isRegisteredShiftForNextWeek(userId)) {
-                props.navigation.push('Dangkylich');
+                // props.navigation.push('Dangkylich');
             } else {
                 createAlert("Notification", "You have registered shifts for next week. You cannot register again!");
             }
