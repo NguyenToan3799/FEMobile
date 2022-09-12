@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek } from '../utils/Employee';
+import { isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
@@ -66,6 +66,13 @@ const Trangchu = (props) => {
         }
     }
 
+    const getUserSchedule = async() => {
+        let userRegistrationData = await getRegistrationScheduleForNextWeek(userId);
+        await updateRegistrationSchedule(userRegistrationData, roleName);
+        props.navigation.push('Xemlich');
+        console.log('--------------');
+    }
+
     return (
         <SafeAreaView >
             <ScrollView>
@@ -105,7 +112,7 @@ const Trangchu = (props) => {
                                 name={'calendar'}
                                 size={100}
                                 color={'#40E0D0'}
-                                onPress={() => { props.navigation.push('Xemlich') }}
+                                onPress={() => { getUserSchedule() }}
 
                             />
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Xemlich') }}>View Schedule</Text>
@@ -117,7 +124,7 @@ const Trangchu = (props) => {
                                 name={'clock-o'}
                                 size={100}
                                 color={'#4169E1'}
-                                onPress={() => { props.navigation.push('Giolam') }}
+                                onPress={() => { getUserSchedule() }}
                             />
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Giolam') }}>Check Working Hours</Text>
                         </View>

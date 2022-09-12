@@ -3,10 +3,49 @@ import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { Button } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { getRegistrationScheduleForNextWeek } from "../utils/Employee";
+import { getUserInfo, getUserSchedule } from "../utils/AsyncStorage";
+import { useState } from 'react';
 import Submit from '../components/Submit';
+import { nextDate } from "../utils/Utils";
 
 const Xemlich = props => {
+  let [registrationSchedule, setRegistrationSchedule] = useState(['-', '-', '-', '-', '-', '-', '-',]);
+
+//   const [userInfo, setUserInfo] = useState({
+//     "address": "Sky 9 Lien Phuong",
+//     "dayOfBirth": "03/07/1999",
+//     "email": "toan@fpt.edu.vn",
+//     "fullName": "Toan",
+//     "password": "123",
+//     "phoneNumber": "1234123123",
+//     "role": {
+//         "id": "3",
+//         "name": "EMPLOYEE_FULLTIME"
+//     },
+//     "sex": "Nam",
+//     "status": true,
+//     "store": {
+//         "address": "51 Do Xuan Hop",
+//         "storeID": "dxh",
+//         "storeName": "Do Xuan Hop"
+//     },
+//     "userID": "toan",
+//     "userName": "Song Toan"
+// });
+
+//   getUserInfo().then(info => info != null ? setUserInfo(info) : props.navigation.push('Home')).catch(error => console.log(error));
+
+//   const roleName = userInfo.role.name;
+//   const userId = userInfo.userID;
+
+  getUserSchedule().then(schedule => setRegistrationSchedule(schedule)).catch(error => console.log(error));
+  // getRegistrationScheduleForNextWeek(userId).then(data => updateRegistrationSchedule(data))
+
+  
+  
+
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -16,7 +55,7 @@ const Xemlich = props => {
               name={'chevron-left'}
               size={30}
               color={'black'}
-              onPress={() => { props.navigation.push('Trangchu') }}
+              onPress={() => {  props.navigation.push('Trangchu') }}
             />
           </View>
           <View style={{ width: '80%', height: '100%' }}>
@@ -91,26 +130,61 @@ const Xemlich = props => {
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20}}> Thứ 2: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 2: </Text>
           </View>
           <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00"}}> Ca 2</Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[0]}</Text>
           </View>
-
-
         </View>
-        <View style={[styles.viewlich]}>
-
+        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 3: </Text>
+          </View>
+          <View style={{ width: '70%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[1]}</Text>
+          </View>
         </View>
-        <View style={[styles.viewlich]}>
-
+        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 4: </Text>
+          </View>
+          <View style={{ width: '70%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[2]}</Text>
+          </View>
         </View>
-        <View style={[styles.viewlich]}>
-
+        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 5: </Text>
+          </View>
+          <View style={{ width: '70%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[3]}</Text>
+          </View>
         </View>
-        <View style={[styles.viewlich]}>
-
+        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 6: </Text>
+          </View>
+          <View style={{ width: '70%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[4]}</Text>
+          </View>
         </View>
+        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 7: </Text>
+          </View>
+          <View style={{ width: '70%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[5]}</Text>
+          </View>
+        </View>
+        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Chủ nhật: </Text>
+          </View>
+          <View style={{ width: '70%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[6]}</Text>
+          </View>
+        </View>
+        
 
       </ScrollView>
     </SafeAreaView>
