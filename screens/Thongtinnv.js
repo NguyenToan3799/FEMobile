@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, Image, ScrollView, DropDow } from 'react-native';
 import { Button } from "react-native-elements";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -82,13 +83,11 @@ const Thongtinnv = props => {
                     </View>
                     
                     
-                    <View style={styles.container}>
-                        <Submit title="Edit" color="#A1C639"
-                            onPress={() => {
-                                props.navigation.push('EditInfor');
-                            }} />
-                        
-                    </View>
+                    <TouchableOpacity style={styles.buttonclick}
+                        onPress={() => { props.navigation.push('EditInfor') }}
+                        underlayColor='#fff'>
+                        <Text style={styles.buttonText}>Edit</Text>
+                    </TouchableOpacity>
                     
                     
                 </View>
@@ -113,6 +112,26 @@ const styles = StyleSheet.create({
     },
     label: {
         margin: 8,
+    },
+    buttonclick: {
+        width: 100,
+        height: 50,
+        borderRadius: 10,
+        marginVertical: 10,
+
+        backgroundColor: '#A1C639',
+
+    },
+    buttonText: {
+        color: 'green',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        fontSize: 22,
+        alignSelf: 'center',
+        marginVertical: 10,
+        fontFamily: "Arial"
+
     }
 
 });

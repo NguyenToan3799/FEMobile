@@ -87,14 +87,9 @@ const Trangchu = (props) => {
                         <Text style={[styles.textName, { /*textDecorationLine: 'underline'*/ }]}>{roleText}</Text>
                     </View>
                     <View style={{ width: '20%', height: '100%' }}>
-                        <Text style={{ color: '#696969', marginTop: 15, textAlign: 'center', fontSize: 20 }}
+                        <Text style={{ color: '#696969', marginTop: 25, textAlign: 'center', fontSize: 20 }}
                             onPress={() => { props.navigation.push('Home'); console.log(userInfo.fullName) }}  >Logout</Text>
-                        <Icon style={{ textAlign: 'center', margin: 10 }}
-                            name={'bell-o'}
-                            size={30}
-                            color={'black'}
-
-                        />
+                        
                     </View>
 
 
@@ -151,35 +146,12 @@ const Trangchu = (props) => {
                                 color={'#7FFFD4'}
                                 onPress={() => { props.navigation.push('Nangluc') }}
                             />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Nangluc') }}>View danh gia</Text>
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Nangluc') }}>View Assessment</Text>
                         </View>
                     </View>
                 </View>
                 <View style={[styles.container1, { height: 200, flexDirection: 'row' }]}>
                     <View style={{ width: '50%', height: '100%' }}>
-                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
-                            <Icon style={{ textAlign: 'center', margin: 15 }}
-                                name={'trophy'}
-                                size={100}
-                                color={'#FFD700'}
-                                onPress={() => { props.navigation.push('Thuongphat') }}
-                            />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Thuongphat') }}>Rewards/Penalty</Text>
-                        </View>
-                    </View>
-                    <View style={{ width: '50%', height: '100%' }}>
-                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
-                            <Icon style={{ textAlign: 'center', margin: 15 }}
-                                name={'vcard'}
-                                size={100}
-                                color={'#FFDEAD'}
-                                onPress={() => { props.navigation.push('Thongtinnv') }}
-                            />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Thongtinnv') }}>Staff information</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={[styles.container1, { height: 200, flexDirection: 'row' }]}>
                     {roleName === "EMPLOYEE_PARTIME" ? (<View style={{ width: '50%', height: '100%' }}>
                         <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
                             <Icon style={{ textAlign: 'center', margin: 15 }}
@@ -202,7 +174,20 @@ const Trangchu = (props) => {
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('OffDay') }}>Regist Off Day</Text>
                         </View>
                     </View>) : null}
+                    </View>
+                    <View style={{ width: '50%', height: '100%' }}>
+                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
+                            <Icon style={{ textAlign: 'center', margin: 15 }}
+                                name={'vcard'}
+                                size={100}
+                                color={'#FFDEAD'}
+                                onPress={() => { props.navigation.push('Thongtinnv') }}
+                            />
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Thongtinnv') }}>Staff information</Text>
+                        </View>
+                    </View>
                 </View>
+                
             </ScrollView>
         </SafeAreaView>
     )

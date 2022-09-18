@@ -8,6 +8,7 @@ import { getUserInfo, getUserSchedule } from "../utils/AsyncStorage";
 import { useState } from 'react';
 import Submit from '../components/Submit';
 import { nextDate } from "../utils/Utils";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Xemlich = props => {
   let [registrationSchedule, setRegistrationSchedule] = useState(['-', '-', '-', '-', '-', '-', '-',]);
@@ -68,120 +69,169 @@ const Xemlich = props => {
         </View>
         <View style={[styles.container, { backgroundColor: '#C0C0C0', height: 80, flexDirection: 'row' }]}>
           <View style={{ width: '20%', height: '100%' }}>
-            <Icon style={{ marginTop: 25, marginLeft: 20 }}
-              name={'chevron-left'}
-              size={30}
-              color={'#1E90FF'}
-
-            />
+            
           </View>
           <View style={{ width: '60%', height: '100%' }}>
             <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
             <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}> 23/5-29/5</Text>
           </View>
           <View style={{ width: '20%', height: '100%' }}>
-            <Icon style={{ marginTop: 25, marginLeft: 20 }}
-              name={'chevron-right'}
-              size={30}
-              color={'#1E90FF'}
-
-            />
+            
           </View>
         </View>
-        <View style={[styles.container, { borderColor: 'black', borderWidth: 2, height: 70, flexDirection: 'row' }]}>
-          <View style={{ width: '17%', height: '100%' }}>
-            <View style={{ backgroundColor: '#A1C639', height: 40, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
-
-              <Text style={styles.textThu}>Thứ </Text>
-              <Text style={styles.Textngay}> 2</Text>
-            </View>
-          </View>
-          <View style={{ width: '17%', height: '100%' }}>
-            <View style={{ backgroundColor: '#DCDCDC', height: 40, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
-              <Text style={styles.textThu}>Thứ </Text>
-              <Text style={{ fontSize: 15, marginLeft: 14 }}> 3</Text>
-            </View>
-          </View>
-          <View style={{ width: '17%', height: '100%' }}>
-            <View style={{ backgroundColor: '#DCDCDC', height: 40, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
-              <Text style={styles.textThu}>Thứ </Text>
-              <Text style={styles.Textngay}> 4</Text>
-            </View>
-          </View>
-          <View style={{ width: '17%', height: '100%' }}>
-            <View style={{ backgroundColor: '#DCDCDC', height: 40, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
-              <Text style={styles.textThu}>Thứ </Text>
-              <Text style={styles.Textngay}> 5</Text>
-            </View>
-          </View>
-          <View style={{ width: '17%', height: '100%' }}>
-            <View style={{ backgroundColor: '#DCDCDC', height: 40, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
-              <Text style={styles.textThu}>Thứ </Text>
-              <Text style={styles.Textngay}> 6</Text>
-            </View>
-          </View>
-          <View style={{ width: '15%', height: '100%' }}>
-            <View style={{ backgroundColor: '#DCDCDC', height: 40, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}>
-              <Text style={styles.textThu}>Thứ </Text>
-              <Text style={styles.Textngay}> 7</Text>
-            </View>
-          </View>
-
-        </View>
+        
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 2: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Monday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[0]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[0]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 3: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Tuesday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[1]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[1]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 4: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Wednesday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[2]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[2]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 5: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thursday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[3]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[3]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 6: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Friday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[4]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[4]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thứ 7: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Saturday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[5]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[5]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Chủ nhật: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Sunday: </Text>
           </View>
-          <View style={{ width: '70%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[6]}</Text>
+          <View style={{ width: '30%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[6]}</Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+          <TouchableOpacity style={styles.checkButton}
+              onPress={() => { props.navigation.push('Trangchu') }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
         </View>
         
@@ -215,6 +265,23 @@ const styles = StyleSheet.create({
     borderRadius: 20
 
 
+  },
+  checkButton: {
+    width: 80,
+    height: 25,
+    marginTop: 20,
+    paddingBottom: 10,
+    backgroundColor: 'red',
+    borderRadius:7,
+    borderWidth: 1,
+    borderColor: '#fff'
+  },
+  checkText: {
+    color: '#fff',
+    textAlign: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignSelf: 'center'
   }
 });
 
