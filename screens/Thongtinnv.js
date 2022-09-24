@@ -372,6 +372,26 @@ const styles = StyleSheet.create({
         fontFamily: 'Arial',
         fontSize: 14,
         color: 'red',
+    },
+    buttonclick: {
+        width: 100,
+        height: 50,
+        borderRadius: 10,
+        marginVertical: 10,
+
+        backgroundColor: '#A1C639',
+
+    },
+    buttonText: {
+        color: 'green',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        fontSize: 22,
+        alignSelf: 'center',
+        marginVertical: 10,
+        fontFamily: "Arial"
+
     }
 
 });

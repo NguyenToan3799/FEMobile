@@ -39,7 +39,7 @@ const Dangkylich = props => {
   const nextSunday = add(nextMonday, { days: 6 })
   nextSunday.setHours(23, 59, 59, 0);
 
-  const shiftData = ["Ca 1", "Ca 2", "Ca 3"];
+  const shiftData = ["Shift 1", "Shift 2", "Shift 3"];
 
   const nextSundayString = `${nextSunday.getDate()}/${nextSunday.getMonth() + 1}`;
 
@@ -189,12 +189,7 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.container, { backgroundColor: '#C0C0C0', height: 80, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <Icon style={{ marginTop: 25, marginLeft: 20 }}
-                name={'chevron-left'}
-                size={30}
-                color={'#1E90FF'}
-
-              />
+              
             </View>
             <View style={{ width: '60%', height: '100%' }}>
               <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
@@ -202,18 +197,13 @@ const Dangkylich = props => {
               <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }}>{nextMondayString} - {nextSundayString}</Text>
             </View>
             <View style={{ width: '20%', height: '100%' }}>
-              <Icon style={{ marginTop: 25, marginLeft: 20 }}
-                name={'chevron-right'}
-                size={30}
-                color={'#1E90FF'}
-
-              />
+              
             </View>
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Thứ 2 </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Monday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -238,8 +228,8 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Thứ 3 </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Tuesday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -264,8 +254,8 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Thứ 4 </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Wednesday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -290,8 +280,8 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Thứ 5 </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Thursday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -316,8 +306,8 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row', marginTop: 5 }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Thứ 6 </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Friday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -342,8 +332,8 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Thứ 7 </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Saturday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -368,8 +358,8 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              <View style={{ backgroundColor: '#A1C639', height: 50, width: 60, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Chủ nhật </Text>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Sunday </Text>
               </View>
             </View>
             <View style={{ width: '60%', height: '100%' }}>
@@ -392,12 +382,8 @@ const Dangkylich = props => {
               </View>
             </View>
           </View>
-          <View>
-            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5, color: "#FF0000" }}>Plan for week</Text>
-            <Text style={{ fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 5 }}>Sinh nhat anh Lam cua hang can 8 ban dang ky vao ca 1</Text>
-
-          </View>
-          <View style={styles.container}>
+          
+          <View style={[styles.container, {marginTop: 10}]}>
             <Button title="Confirm" color="#a1C639"
               onPress={() => {
                 Alert.alert(
@@ -489,7 +475,7 @@ const styles = StyleSheet.create({
   },
   textThu: {
     fontSize: 15,
-    marginLeft: 8,
+    textAlign: 'center',
     fontFamily: 'Arial'
   },
   Textngay: {

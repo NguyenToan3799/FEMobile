@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { CheckBox } from "react-native-elements";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Submit from "../components/Submit";
@@ -110,23 +111,25 @@ const EditInfor = props => {
 
                         </View>
                     </View>
+
                     <View style={[styles.container, { height: 80, flexDirection: 'row', marginTop: 10 }]}>
                         <View style={{ width: '27%', height: '100%' }}>
-                            <Submit title="Save" color="#A1C639"
-                                onPress={() => {
-                                    props.navigation.push('Thongtinnv');
-                                }} />
-
+                            <TouchableOpacity style={styles.buttonclick}
+                                onPress={() => { props.navigation.push('Thongtinnv') }}
+                                underlayColor='#fff'>
+                                <Text style={styles.buttonText}>Save</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ width: '27%', height: '100%' }}>
-                            <Submit title="Cancel" color="#A1C639"
-                                onPress={() => {
-                                    props.navigation.push('EditInfor');
-                                }} />
-
+                            <TouchableOpacity style={styles.buttonclick}
+                                onPress={() => { props.navigation.push('Thongtinnv') }}
+                                underlayColor='#fff'>
+                                <Text style={styles.buttonText}>Cancel</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
+
             </ScrollView>
         </SafeAreaView>
     )
@@ -148,6 +151,26 @@ const styles = StyleSheet.create({
     },
     label: {
         margin: 8,
+    },
+    buttonclick: {
+        width: 100,
+        height: 50,
+        borderRadius: 10,
+        marginVertical: 10,
+
+        backgroundColor: '#A1C639',
+
+    },
+    buttonText: {
+        color: 'green',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        fontSize: 22,
+        alignSelf: 'center',
+        marginVertical: 10,
+        fontFamily: "Arial"
+        
     }
 
 });
