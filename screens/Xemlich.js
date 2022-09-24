@@ -10,40 +10,49 @@ import Submit from '../components/Submit';
 import { nextDate } from "../utils/Utils";
 
 const Xemlich = props => {
-  let [registrationSchedule, setRegistrationSchedule] = useState(['-', '-', '-', '-', '-', '-', '-',]);
+  // let [registrationSchedule, setRegistrationSchedule] = useState(['-', '-', '-', '-', '-', '-', '-',]);
+  let registrationSchedule = props.route.params["updatedSchedule"];
+  console.log(props.route.params);
+  console.log('++++++++++++++++++'); 
+  //   const [userInfo, setUserInfo] = useState({
+  //     "address": "Sky 9 Lien Phuong",
+  //     "dayOfBirth": "03/07/1999",
+  //     "email": "toan@fpt.edu.vn",
+  //     "fullName": "Toan",
+  //     "password": "123",
+  //     "phoneNumber": "1234123123",
+  //     "role": {
+  //         "id": "3",
+  //         "name": "EMPLOYEE_FULLTIME"
+  //     },
+  //     "sex": "Nam",
+  //     "status": true,
+  //     "store": {
+  //         "address": "51 Do Xuan Hop",
+  //         "storeID": "dxh",
+  //         "storeName": "Do Xuan Hop"
+  //     },
+  //     "userID": "toan",
+  //     "userName": "Song Toan"
+  // });
 
-//   const [userInfo, setUserInfo] = useState({
-//     "address": "Sky 9 Lien Phuong",
-//     "dayOfBirth": "03/07/1999",
-//     "email": "toan@fpt.edu.vn",
-//     "fullName": "Toan",
-//     "password": "123",
-//     "phoneNumber": "1234123123",
-//     "role": {
-//         "id": "3",
-//         "name": "EMPLOYEE_FULLTIME"
-//     },
-//     "sex": "Nam",
-//     "status": true,
-//     "store": {
-//         "address": "51 Do Xuan Hop",
-//         "storeID": "dxh",
-//         "storeName": "Do Xuan Hop"
-//     },
-//     "userID": "toan",
-//     "userName": "Song Toan"
-// });
+  //   getUserInfo().then(info => info != null ? setUserInfo(info) : props.navigation.push('Home')).catch(error => console.log(error));
 
-//   getUserInfo().then(info => info != null ? setUserInfo(info) : props.navigation.push('Home')).catch(error => console.log(error));
+  //   const roleName = userInfo.role.name;
+  //   const userId = userInfo.userID;
 
-//   const roleName = userInfo.role.name;
-//   const userId = userInfo.userID;
-
-  getUserSchedule().then(schedule => setRegistrationSchedule(schedule)).catch(error => console.log(error));
+  // getUserSchedule().then(schedule => setRegistrationSchedule(schedule)).catch(error => console.log(error));
   // getRegistrationScheduleForNextWeek(userId).then(data => updateRegistrationSchedule(data))
 
-  
-  
+  const nextMonday = nextDate(1);
+  const nextMondayString = `${nextMonday.getDate()}/${nextMonday.getMonth() + 1}`;
+  let add = require('date-fns/add');
+  const nextSunday = add(nextMonday, { days: 6 })
+  nextSunday.setHours(23, 59, 59, 0);
+
+  const nextSundayString = `${nextSunday.getDate()}/${nextSunday.getMonth() + 1}`;
+
+
 
 
   return (
@@ -55,7 +64,7 @@ const Xemlich = props => {
               name={'chevron-left'}
               size={30}
               color={'black'}
-              onPress={() => {  props.navigation.push('Trangchu') }}
+              onPress={() => { props.navigation.push('Trangchu') }}
             />
           </View>
           <View style={{ width: '80%', height: '100%' }}>
@@ -76,8 +85,8 @@ const Xemlich = props => {
             />
           </View>
           <View style={{ width: '60%', height: '100%' }}>
-            <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
-            <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}> 23/5-29/5</Text>
+            <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}>Week</Text>
+            <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 70 }}>{nextMondayString} - {nextSundayString}</Text>
           </View>
           <View style={{ width: '20%', height: '100%' }}>
             <Icon style={{ marginTop: 25, marginLeft: 20 }}
@@ -184,7 +193,7 @@ const Xemlich = props => {
             <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 100, fontSize: 20, color: "#00FF00" }}>{registrationSchedule[6]}</Text>
           </View>
         </View>
-        
+
 
       </ScrollView>
     </SafeAreaView>

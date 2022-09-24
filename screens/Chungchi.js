@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, ScrollView, FlatList } from 'react-native';
 import { Button } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,6 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Chungchi = props => {
+    console.log('--------------------------------');
+    console.log(props.route.params["certificates"]);
+
+    let userCertificates = props.route.params["certificates"];
     return (
         <SafeAreaView>
             <ScrollView>
@@ -33,14 +37,12 @@ const Chungchi = props => {
                     <Text style={{ fontSize: 20, textDecorationLine: 'underline', fontFamily: 'Arial', color: "red" }}>Passio's certificate</Text>
                 </View>
                 <View style={[styles.viewgchungchi]}>
-                    <View style ={{flexDirection: 'row', marginTop: 7}}>
-                        <Text style={[styles.textchungchi, { width: '70%' }]}>- Chứng chỉ pha chế </Text>
-                        <Text style={[styles.textchungchi, { width: '30%' }]}>20/10/2022 </Text>
-                    </View>
-                    <View style ={{flexDirection: 'row', marginTop: 7}}>
-                        <Text style={[styles.textchungchi, { width: '70%' }]}>- Chứng chỉ Tiếng Anh </Text>
-                        <Text style={[styles.textchungchi, { width: '30%' }]}>20/10/2022 </Text>
-                    </View>
+                    {userCertificates.map((certificate) => {
+                        return (<View style={{ flexDirection: 'row', marginTop: 7 }}>
+                            <Text style={[styles.textchungchi, { width: '70%' }]}>- {certificate.certificateName}</Text>
+                            <Text style={[styles.textchungchi, { width: '30%' }]}>{certificate.date}</Text>
+                        </View>);
+                    })}
                 </View>
 
 

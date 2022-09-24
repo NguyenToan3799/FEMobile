@@ -86,34 +86,56 @@ const getListDayNextWeek = () => {
     let add = require('date-fns/add');
 
     for (let i = 0; i < 8; i++) {
-      let nextDay = add(nextMonday, { days: i });
-      listDay.push(nextDay);
+        let nextDay = add(nextMonday, { days: i });
+        listDay.push(nextDay);
     }
     return listDay;
-  }
+}
 
-  const updateRegistrationSchedule = async (data, roleName) => {
+const updateRegistrationSchedule = async (data, roleName) => {
     let listDay = getListDayNextWeek();
     let updatedSchedule = ['-', '-', '-', '-', '-', '-', '-',];
     for (let item of data) {
-      console.log(item);
-      for (let i = 0; i < 7; i++) {
-        let itemDate = new Date(item.date);
-        if (itemDate >= listDay[i] && itemDate <= listDay[i + 1]) {
-          if (roleName == 'EMPLOYEE_FULLTIME') {
-            updatedSchedule[i] = 'OFF';
-          } else {
-            if (item['shift1']) updatedSchedule[i] = 'Ca 1';
-            else if (item['shift2']) updatedSchedule[i] = 'Ca 2';
-            else if (item['shift3']) updatedSchedule[i] = 'Ca 3';
-          }
-          break;
+        console.log(item);
+        for (let i = 0; i < 7; i++) {
+            let itemDate = new Date(item.date);
+            if (itemDate >= listDay[i] && itemDate <= listDay[i + 1]) {
+                if (roleName == 'EMPLOYEE_FULLTIME') {
+                    updatedSchedule[i] = 'OFF';
+                } else {
+                    if (item['shift1']) updatedSchedule[i] = 'Ca 1';
+                    else if (item['shift2']) updatedSchedule[i] = 'Ca 2';
+                    else if (item['shift3']) updatedSchedule[i] = 'Ca 3';
+                }
+                break;
+            }
         }
-      }
     }
     console.log(updatedSchedule);
-    await saveUserSchedule(updatedSchedule);
-    console.log('**********');
-  }
+    // await saveUserSchedule(updatedSchedule);
+    return updatedSchedule;
+}
 
-export { isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };
+const getEmployeeCertificate = async (userId) => {
+    let listCertificate = [];
+    await fetch(`http://api.ngocsonak.xyz:8181/api/certificates/get-by-user-id?id=${userId}`, {
+        method: 'GET',
+        heaaders: {
+            Accept: '*/*',
+        }
+    }).then(response => response.json()).then(async (result) => listCertificate = result).catch(error => console.log('error', error));
+    return listCertificate;
+}
+
+const getEmployeeRewardandDiscipline = async (userId) => {
+    let listRewardAndDiscipline = [];
+    await fetch(`http://api.ngocsonak.xyz:8181/api/rewardanddiscipline/get-by-user-id?id=${userId}`, {
+        method: 'GET',
+        heaaders: {
+            Accept: '*/*',
+        }
+    }).then(response => response.json()).then(async (result) => listRewardAndDiscipline = result).catch(error => console.log('error', error));
+    return listRewardAndDiscipline;
+}
+
+export { getEmployeeRewardandDiscipline, getEmployeeCertificate, isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };

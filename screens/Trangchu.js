@@ -6,16 +6,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
+import { getEmployeeCertificate, isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
-      title,
-      message,
-      [
-        // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
-        { text: "OK"}
-      ]
+        title,
+        message,
+        [
+            // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+            { text: "OK" }
+        ]
     );
 
 const Trangchu = (props) => {
@@ -43,7 +43,7 @@ const Trangchu = (props) => {
         "userName": "Song Toan"
     });
 
-    getUserInfo().then(info => info != null ? setUserInfo(info): props.navigation.push('Home')).catch(error => console.log(error));
+    getUserInfo().then(info => info != null ? setUserInfo(info) : props.navigation.push('Home')).catch(error => console.log(error));
 
     const roleName = userInfo.role.name;
     const roleText = roleName === 'EMPLOYEE_FULLTIME' ? 'Nhân viên Fulltime' : 'Nhân viên Partime';
@@ -66,12 +66,19 @@ const Trangchu = (props) => {
         }
     }
 
-    const getUserSchedule = async() => {
+    const getUserSchedule = async () => {
         let userRegistrationData = await getRegistrationScheduleForNextWeek(userId);
-        await updateRegistrationSchedule(userRegistrationData, roleName);
-        props.navigation.push('Xemlich');
+        let updatedSchedule = await updateRegistrationSchedule(userRegistrationData, roleName);
+        props.navigation.push('Xemlich', {updatedSchedule: updatedSchedule});
         console.log('--------------');
     }
+
+    const getUserCertificate = async () => {
+        let userCertificates = await getEmployeeCertificate(userId);
+        props.navigation.push('Chungchi', {certificates: userCertificates});
+    }
+
+    // const getRewardAndDiscipline
 
     return (
         <SafeAreaView >
@@ -138,7 +145,7 @@ const Trangchu = (props) => {
                                 name={'certificate'}
                                 size={100}
                                 color={'#00FA9A'}
-                                onPress={() => { props.navigation.push('Chungchi') }}
+                                onPress={() => { getUserCertificate() }}
                             />
                             <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Chungchi') }}>View Certificate </Text>
                         </View>
