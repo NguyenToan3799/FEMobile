@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { getEmployeeCertificate, isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
+import { updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
@@ -67,10 +67,12 @@ const Trangchu = (props) => {
     }
 
     const getUserSchedule = async () => {
-        let userRegistrationData = await getRegistrationScheduleForNextWeek(userId);
-        let updatedSchedule = await updateRegistrationSchedule(userRegistrationData, roleName);
+        let userRegistrationData = await getWorkScheduleForCurrentWeek(userId);
+        let updatedSchedule = await updateWorkSchedule(userRegistrationData, roleName);
         props.navigation.push('Xemlich', {updatedSchedule: updatedSchedule});
         console.log('--------------');
+        // console.log(userRegistrationData);
+        console.log(updatedSchedule);
     }
 
     const getUserCertificate = async () => {
