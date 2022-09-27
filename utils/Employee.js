@@ -82,7 +82,7 @@ const getWorkScheduleForCurrentWeek = async (userId) => {
     let nextMonday = nextDate(1);
     nextMonday.setHours(0, 0, 0, 0);
     let sub = require('date-fns/sub');
-    nextMonday = sub(nextMonday, { days: 14 });
+    nextMonday = sub(nextMonday, { days: 7 });
     let add = require('date-fns/add');
     const nextSunday = add(nextMonday, { days: 6 });
     nextSunday.setHours(23, 59, 59, 0);
@@ -126,7 +126,7 @@ const getListDayCurrentWeek = () => {
     let nextMonday = nextDate(1);
     nextMonday.setHours(0, 0, 0, 0);
     let sub = require('date-fns/sub');
-    nextMonday = sub(nextMonday, { days: 14 });
+    nextMonday = sub(nextMonday, { days: 7 });
 
     let add = require('date-fns/add');
 
