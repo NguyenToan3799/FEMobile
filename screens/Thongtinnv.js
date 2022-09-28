@@ -176,7 +176,7 @@ const Thongtinnv = props => {
                             <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>FullName:</Text>
                         </View>
                         <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
-                            <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>{userInfo.fullName}</Text>
+                            <Text style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }}>{userInfo.fullName}</Text>
                         </View>
                     </View>
                     <View style={[styles.container, { height: 50, flexDirection: 'row' }]}>
@@ -185,8 +185,8 @@ const Thongtinnv = props => {
                         </View>
                         <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
                             {!isEditing ?
-                                <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>{userInfo.phoneNumber}</Text> :
-                                <TextInput onChangeText={setPhoneNumber} defaultValue={userInfoUpdate.phoneNumber} />}
+                                <Text style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }}>{userInfo.phoneNumber}</Text> :
+                                <TextInput style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }} onChangeText={setPhoneNumber} defaultValue={userInfoUpdate.phoneNumber} />}
                             {
                                 phoneErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{phoneErrorMessage}</Text> : null
                             }
@@ -198,10 +198,10 @@ const Thongtinnv = props => {
                         </View>
                         <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
                             {!isEditing ?
-                                <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>{userInfo.address}</Text> :
-                                <TextInput onChangeText={setAddress} defaultValue={userInfoUpdate.address} />}
+                                <Text style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }}>{userInfo.address}</Text> :
+                                <TextInput style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }} onChangeText={setAddress} defaultValue={userInfoUpdate.address} />}
                             {
-                                addressErrormessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{phoneErrorMessage}</Text> : null
+                                addressErrormessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{addressErrormessage}</Text> : null
                             }
                         </View>
                     </View>
@@ -211,10 +211,10 @@ const Thongtinnv = props => {
                         </View>
                         <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
                             {!isEditing ?
-                                <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>{userInfo.sex}</Text> :
-                                <TextInput onChangeText={setSex} defaultValue={userInfoUpdate.sex} />}
+                                <Text style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }}>{userInfo.sex}</Text> :
+                                <TextInput style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }} onChangeText={setSex} defaultValue={userInfoUpdate.sex} />}
                             {
-                                sexErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{phoneErrorMessage}</Text> : null
+                                sexErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{sexErrorMessage}</Text> : null
                             }
                         </View>
                     </View>
@@ -224,8 +224,8 @@ const Thongtinnv = props => {
                         </View>
                         <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
                             {!isEditing ?
-                                <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>{userInfo.dayOfBirth}</Text> :
-                                <TextInput onChangeText={setBirthday} defaultValue={userInfoUpdate.dayOfBirth} />
+                                <Text style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }}>{userInfo.dayOfBirth}</Text> :
+                                <TextInput style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }} onChangeText={setBirthday} defaultValue={userInfoUpdate.dayOfBirth} />
                                 // <TextInput defaultValue={userInfo.dayOfBirth}/>
                                 // <DatePicker
                                 //     // options={{
@@ -259,7 +259,7 @@ const Thongtinnv = props => {
                                 // <DatePicker date={date} onDateChange={date => console.log(date)} />
                             }
                             {
-                                birthdayErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{phoneErrorMessage}</Text> : null
+                                birthdayErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{birthdayErrorMessage}</Text> : null
                             }
                         </View>
                     </View>
@@ -269,10 +269,10 @@ const Thongtinnv = props => {
                         </View>
                         <View style={{ width: '73%', height: '100%', borderColor: 'black', borderWidth: 1, height: 30, borderRadius: 10, marginRight: 15, width: 250 }}>
                             {!isEditing ?
-                                <Text style={{ marginTop: 17, marginHorizontal: 20, fontFamily: 'Arial', fontSize: 15 }}>{userInfo.email}</Text> :
-                                <TextInput onChangeText={setEmail} defaultValue={userInfoUpdate.email} />}
+                                <Text style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }}>{userInfo.email}</Text> :
+                                <TextInput style={{ marginTop: 5, textAlign: 'center', fontFamily: 'Arial', fontSize: 15 }} onChangeText={setEmail} defaultValue={userInfoUpdate.email} />}
                             {
-                                emailErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{phoneErrorMessage}</Text> : null
+                                emailErrorMessage.length > 0 && isEditing ? <Text style={styles.errorMessage}>{emailErrorMessage}</Text> : null
                             }
                         </View>
                     </View>
@@ -372,6 +372,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Arial',
         fontSize: 14,
         color: 'red',
+        marginTop:5,
+        textAlign: 'center'
     },
     buttonclick: {
         width: 100,

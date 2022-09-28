@@ -91,7 +91,7 @@ const Login = (props) => {
                             <Text style={styles.textForgot} onPress={() => createAlert("Notification", "Please contact your manager!")}
                             > Forgot Password?</Text>
                         </View>
-                        <Submit title="LOG IN" color={isEnableButton == true ? "white" : "gray"} enable={isEnableButton}
+                        <Submit title="LOG IN" color={isEnableButton == true ? "white" : "#C0C0C0"} enable={isEnableButton}
                             onPress={() => {
                                 checkLoginInfo();
                             }} />
@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
     },
     textForgot: {
         fontFamily: 'Arial',
-        fontSize: 12,
-        color: 'grey',
+        fontSize: 17,
+        color: '#CC3300',
         marginVertical: 10,
         alignSelf: 'flex-end'
     },

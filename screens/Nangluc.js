@@ -23,7 +23,7 @@ const Nangluc = props => {
 
                 </View>
                 <View style={[styles.container, { backgroundColor: '#D3D3D3', height: 100, borderWidth: 1, borderColor: 'red', borderRadius: 50, width: 200, alignSelf: 'center', marginTop: 10 }]}>
-                    <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20 }}> Total Score: </Text>
+                    <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20 }}> Total Score: 64</Text>
                 </View>
                 <View style={{ borderWidth: 2, borderColor: 'black', height: 400, marginTop: 10, backgroundColor: 'white' }}>
                     <View style={{ flexDirection: 'row', marginTop: 7 }}>
@@ -58,6 +58,9 @@ const Nangluc = props => {
                         <Text style={[styles.textdanhgia, { width: '70%' }]}>-Time manager :  </Text>
                         <Text style={[styles.textdanhgia, { width: '30%' }]}>8 </Text>
                     </View>
+                    <View style={[styles.container]}>
+                    <Text style={{ color: '#00AA00', fontFamily: 'Arial', fontSize: 25 }}> Reward</Text>
+                </View>
                 </View>
                 <View style={styles.container}>
                     <Text style={{ fontFamily: 'Arial', fontSize: 30 }}>Congratulations 👏🏻</Text>

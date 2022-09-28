@@ -180,23 +180,33 @@ const Xemlich = props => {
         {/* Monday */}
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Monday: </Text>
+            <Text style={{ fontFamily: 'Arial', marginTop: 25, textAlign:'center', fontSize: 20 }}> Monday: </Text>
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 25,  textAlign:'center', fontSize: 20, color: "#009900" }}>Shift 1</Text>
+            
+          </View>
+          <View style={{ width: '20%', height: '100%' }}>
+            <Text style={{ fontFamily: 'Arial', marginTop: 25,  textAlign:'center', fontSize: 20, color: "#009900" }}>Shift 1</Text>
+            
+          </View>
+          <View style={{ width: '30%', height: '100%' }}>
+            <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckin}
+              onPress={() => { checkIn(0) }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkin</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.checkButton, {marginVertical: 10}]} disabled={!isEnableCheckin}
+              onPress={() => { checkIn(0) }}
+              underlayColor='#fff'>
+              <Text style={styles.checkText}>Checkout</Text>
+            </TouchableOpacity>
           </View>
           <View>
-            <View style={[{ marginTop: 10, flexDirection: 'row' }]}>
-              <View style={{ width: '30%', height: '100%' }}>
-                <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
-                <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
-              </View>
-              <View style={{ width: '20%', height: '100%' }}>
-                <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckin}
-                  onPress={() => { checkIn(0) }}
-                  underlayColor='#fff'>
-                  <Text style={styles.checkText}>Checkin</Text>
-                </TouchableOpacity>
-              </View>
 
-            </View>
+
+
+
           </View>
 
 
@@ -314,12 +324,13 @@ const styles = StyleSheet.create({
   checkButton: {
     width: 80,
     height: 25,
-    marginTop: 20,
+    marginTop: 10,
     paddingBottom: 10,
     backgroundColor: 'red',
     borderRadius: 7,
     borderWidth: 1,
-    borderColor: '#fff'
+    borderColor: '#fff',
+    marginLeft: 10
   },
   checkText: {
     color: '#fff',
