@@ -112,42 +112,40 @@ const Thongtinnv = props => {
             check = false;
         }
         console.log(check);
-        return check;
+        if (check) {
+            let requestBody = {
+                "address": userInfoUpdate.address,
+                "dayOfBirth": userInfoUpdate.dayOfBirth,
+                "email": userInfoUpdate.email,
+                "fullName": userInfoUpdate.fullName,
+                "password": userInfoUpdate.password,
+                "phoneNumber": userInfoUpdate.phoneNumber,
+                "roleID": userInfoUpdate.role.id,
+                "sex": userInfoUpdate.sex,
+                "status": true,
+                "storeID": userInfoUpdate.store.storeID,
+                "userID": userInfoUpdate.userID,
+                "userName": userInfoUpdate.userName
+            };
 
-    }
+            console.log(requestBody);
 
-    const updateUserInfo = async () => {
-        let requestBody = {
-            "address": userInfoUpdate.address,
-            "dayOfBirth": userInfoUpdate.dayOfBirth,
-            "email": userInfoUpdate.email,
-            "fullName": userInfoUpdate.fullName,
-            "password": userInfoUpdate.password,
-            "phoneNumber": userInfoUpdate.phoneNumber,
-            "roleID": userInfoUpdate.role.id,
-            "sex": userInfoUpdate.sex,
-            "status": true,
-            "storeID": userInfoUpdate.store.storeID,
-            "userID": userInfoUpdate.userID,
-            "userName": userInfoUpdate.userName
-        };
+            const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+                method: 'PUT',
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody),
+            });
+            console.log(response);
+            saveUserInfo(userInfoUpdate);
+            setUserInfo(userInfoUpdate);
+            createAlert("Notification", "You have successfully update user information!");
+            setIsEditing(false);
+            setButtonText("Edit");
+        }
 
-        console.log(requestBody);
-
-        const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
-            method: 'PUT',
-            headers: {
-                'Accept': '*/*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody),
-        });
-        console.log(response);
-        saveUserInfo(userInfoUpdate);
-        setUserInfo(userInfoUpdate);
-        createAlert("Notification", "You have successfully update user information!");
-        setIsEditing(false);
-        setButtonText("Edit");
     }
 
     return (
@@ -289,30 +287,26 @@ const Thongtinnv = props => {
                                     setButtonText("Save");
                                 }
                                 else {
-                                    if (validateUpdateInfo()) {
-                                        Alert.alert(
-                                            "Warning",
-                                            "Do you want to update information?",
-                                            [
-                                                // The "No" button
-                                                // Does nothing but dismiss the dialog when tapped
-                                                {
-                                                    text: "No",
+                                    Alert.alert(
+                                        "Warning",
+                                        "Do you want to update information?",
+                                        [
+                                            // The "No" button
+                                            // Does nothing but dismiss the dialog when tapped
+                                            {
+                                                text: "No",
+                                            },
+                                            // The "Yes" button
+                                            {
+                                                text: "Yes",
+                                                onPress: () => {
+                                                    validateUpdateInfo();
+
                                                 },
-                                                // The "Yes" button
-                                                {
-                                                    text: "Yes",
-                                                    onPress: async () => {
-                                                        updateUserInfo();
-                                                    },
-                                                },
+                                            },
 
-                                            ]
-                                        );
-
-
-                                    }
-
+                                        ]
+                                    );
                                 }
                             }} />
                         {isEditing ?

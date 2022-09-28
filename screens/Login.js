@@ -7,6 +7,17 @@ import { saveUserInfo } from '../utils/AsyncStorage';
 import Inputs from '../components/Inputs';
 import Submit from '../components/Submit';
 import { color } from "react-native-reanimated";
+
+const createAlert = (title, message) =>
+    Alert.alert(
+        title,
+        message,
+        [
+            // { text: "OK", onPress: () => props.navigation.push('Trangchu') }
+            { text: "OK" }
+        ]
+    );
+
 const Login = (props) => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
@@ -77,7 +88,7 @@ const Login = (props) => {
 
 
                         <View style={{ width: '90%' }}>
-                            <Text style={styles.textForgot}
+                            <Text style={styles.textForgot} onPress={() => createAlert("Notification", "Please contact your manager!")}
                             > Forgot Password?</Text>
                         </View>
                         <Submit title="LOG IN" color={isEnableButton == true ? "white" : "gray"} enable={isEnableButton}
