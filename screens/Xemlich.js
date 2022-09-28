@@ -177,181 +177,108 @@ const Xemlich = props => {
           </View>
         </View>
 
+        {/* Monday */}
         <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
           <View style={{ width: '30%', height: '100%' }}>
             <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Monday: </Text>
           </View>
           <View>
-            {
-              workSchedule[0] == null ? <View style={{ width: '30%', height: '100%' }}>
-                <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>OFF</Text>
-              </View> : null
-            }
-            {
-              workSchedule[0] != null && workSchedule[0]['shift1'] ?
-                <View style={[{ marginTop: 10, flexDirection: 'row' }]}>
-                  <View style={{ width: '30%', height: '100%' }}>
-                    <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
-                  </View>
-                  {
-                    isCheckinShift1 && new Date(workSchedule[0]["date"]) >= startDate && new Date(workSchedule[0]["date"]) <= endDate && workSchedule[0]["workingHours"] == null ?
-                      <View style={{ width: '20%', height: '100%' }}>
-                        <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckin}
-                          onPress={() => { checkIn(0) }}
-                          underlayColor='#fff'>
-                          <Text style={styles.checkText}>Checkin</Text>
-                        </TouchableOpacity>
-                      </View> : null
-                  }
-                  {
-                    isCheckoutShift1 && new Date(workSchedule[0]["date"]) >= startDate && new Date(workSchedule[0]["date"]) <= endDate && workSchedule[0]["workingHours"] == null ?
-                      <View style={{ width: '20%', height: '100%' }}>
-                        <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckout}
-                          onPress={() => { checkOut(0) }}
-                          underlayColor='#fff'>
-                          <Text style={styles.checkText}>Checkout</Text>
-                        </TouchableOpacity>
-                      </View> : null
-                  }
+            <View style={[{ marginTop: 10, flexDirection: 'row' }]}>
+              <View style={{ width: '30%', height: '100%' }}>
+                <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
+                <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
+              </View>
+              <View style={{ width: '20%', height: '100%' }}>
+                <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckin}
+                  onPress={() => { checkIn(0) }}
+                  underlayColor='#fff'>
+                  <Text style={styles.checkText}>Checkin</Text>
+                </TouchableOpacity>
+              </View>
 
-                </View> : null
-            }
-
+            </View>
           </View>
 
+
         </View>
-        {/* <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Tuesday: </Text>
-          </View>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{workSchedule[1]}</Text>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkin</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Wednesday: </Text>
-          </View>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{workSchedule[2]}</Text>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkin</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Thursday: </Text>
-          </View>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{workSchedule[3]}</Text>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkin</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Friday: </Text>
-          </View>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{workSchedule[4]}</Text>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkin</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Saturday: </Text>
-          </View>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{workSchedule[5]}</Text>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkin</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Sunday: </Text>
-          </View>
-          <View style={{ width: '30%', height: '100%' }}>
-            <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>{workSchedule[6]}</Text>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkin</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ width: '20%', height: '100%' }}>
-            <TouchableOpacity style={styles.checkButton}
-              onPress={() => { props.navigation.push('Trangchu') }}
-              underlayColor='#fff'>
-              <Text style={styles.checkText}>Checkout</Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
+
+        {/* {
+          workSchedule.map((item, idx) => {
+            <View style={[styles.viewlich, { marginTop: 10, flexDirection: 'row' }]}>
+              <View style={{ width: '30%', height: '100%' }}>
+                <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 20, fontSize: 20 }}> Tuesday: </Text>
+              </View>
+              <View>
+                {
+                  item == null ? <View style={{ width: '30%', height: '100%' }}>
+                    <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>OFF</Text>
+                  </View> : null
+                }
+                {
+                  item != null && item['shift1'] ?
+                    <View style={[{ marginTop: 10, flexDirection: 'row' }]}>
+                      <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
+                      </View>
+                      {
+                        isCheckinShift1 && new Date(item["date"]) >= startDate && new Date(item["date"]) <= endDate && item["workingHours"] == null ?
+                          <View style={{ width: '20%', height: '100%' }}>
+                            <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckin}
+                              onPress={() => { checkIn(index) }}
+                              underlayColor='#fff'>
+                              <Text style={styles.checkText}>Checkin</Text>
+                            </TouchableOpacity>
+                          </View> : null
+                      }
+                      {
+                        isCheckoutShift1 && new Date(item["date"]) >= startDate && new Date(item["date"]) <= endDate && item["workingHours"] == null ?
+                          <View style={{ width: '20%', height: '100%' }}>
+                            <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckout}
+                              onPress={() => { checkOut(index) }}
+                              underlayColor='#fff'>
+                              <Text style={styles.checkText}>Checkout</Text>
+                            </TouchableOpacity>
+                          </View> : null
+                      }
+
+                    </View> : null
+                }
+                {
+                  item != null && item['shift2'] ?
+                    <View style={[{ marginTop: 10, flexDirection: 'row' }]}>
+                      <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 10, fontSize: 20, color: "#00FF00" }}>Shift 1</Text>
+                      </View>
+                      {
+                        isCheckinShift2 && new Date(item["date"]) >= startDate && new Date(item["date"]) <= endDate && item["workingHours"] == null ?
+                          <View style={{ width: '20%', height: '100%' }}>
+                            <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckin}
+                              onPress={() => { checkIn(index) }}
+                              underlayColor='#fff'>
+                              <Text style={styles.checkText}>Checkin</Text>
+                            </TouchableOpacity>
+                          </View> : null
+                      }
+                      {
+                        isCheckoutShift2 && new Date(item["date"]) >= startDate && new Date(item["date"]) <= endDate && item["workingHours"] == null ?
+                          <View style={{ width: '20%', height: '100%' }}>
+                            <TouchableOpacity style={styles.checkButton} disabled={!isEnableCheckout}
+                              onPress={() => { checkOut(index) }}
+                              underlayColor='#fff'>
+                              <Text style={styles.checkText}>Checkout</Text>
+                            </TouchableOpacity>
+                          </View> : null
+                      }
+
+                    </View> : null
+                }
+
+              </View>
+
+
+            </View>
+          })
+        } */}
 
 
       </ScrollView>

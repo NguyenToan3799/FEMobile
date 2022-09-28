@@ -67,12 +67,12 @@ const Trangchu = (props) => {
     }
 
     const getUserSchedule = async () => {
-        let userRegistrationData = await getWorkScheduleForCurrentWeek(userId);
-        let updatedSchedule = await updateWorkSchedule(userRegistrationData, roleName);
+        let userWorkData = await getWorkScheduleForCurrentWeek(userId);
+        let updatedSchedule = await updateWorkSchedule(userWorkData, roleName);
         props.navigation.push('Xemlich', {updatedSchedule: updatedSchedule});
         console.log('--------------');
-        // console.log(userRegistrationData);
-        console.log(updatedSchedule);
+        // console.log(userWorkData);
+        // console.log(updatedSchedule);
     }
 
     const getUserCertificate = async () => {
@@ -119,7 +119,7 @@ const Trangchu = (props) => {
                                 onPress={() => { getUserSchedule() }}
 
                             />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Xemlich') }}>View Schedule</Text>
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => getUserSchedule()}>View Schedule</Text>
                         </View>
                     </View>
                     <View style={{ width: '50%', height: '100%' }}>
