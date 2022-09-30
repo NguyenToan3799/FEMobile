@@ -65,7 +65,7 @@ const Dangkylich = props => {
   const setSelectedShift = (dateDelta, shift) => {
     // let date = new Date();
     // date.setDate(nextMonday.getDate() + dateDelta);
-    let date = nextDate(dateDelta + 1);
+    let date = nextDate(dateDelta + 1).yyyymmdd();
     selectedShift[date] = shift;
     console.log(selectedShift);
   }
