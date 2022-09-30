@@ -23,6 +23,16 @@ const formatDate = (date) => {
   ].join('/');
 }
 
+Date.prototype.yyyymmdd = function () {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+  (mm > 9 ? '' : '0') + mm,
+  (dd > 9 ? '' : '0') + dd
+  ].join('-');
+};
+
 const OffDay = props => {
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,7 +48,7 @@ const OffDay = props => {
   const nextSundayString = `${nextSunday.getDate()}/${nextSunday.getMonth() + 1}`;
 
   const setOffDay = (dateDelta) => {
-    let offDay = nextDate(dateDelta + 1);
+    let offDay = nextDate(dateDelta + 1).yyyymmdd();
     setSelectedDate(offDay);
     console.log(selectedDate)
   }
