@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, isRegisteredShiftForNextWeek, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
+import { updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
@@ -49,20 +49,22 @@ const Trangchu = (props) => {
     const roleText = roleName === 'EMPLOYEE_FULLTIME' ? 'Nhân viên Fulltime' : 'Nhân viên Partime';
     const userId = userInfo.userID;
 
-    const checkRegistrationInfo = async () => {
-        console.log('Checking registration info');
+    const registerSchedule = async () => {
+        let registrationData = await getRegistrationData(userId);
+        console.log(registrationData);
+        // console.log('Checking registration info');
         if (roleName == 'EMPLOYEE_FULLTIME') {
-            if (! await isRegisteredDayOffForNextWeek(userId)) {
-                props.navigation.push('OffDay');
-            } else {
-                createAlert("Notification", "You have registered day off for next week. You cannot register again!");
-            }
+        //     if (! await isRegisteredDayOffForNextWeek(userId)) {
+                // props.navigation.push('OffDay', {registrationData: registrationData});
+        //     } else {
+        //         createAlert("Notification", "You have registered day off for next week. You cannot register again!");
+        //     }
         } else {
-            if (! await isRegisteredShiftForNextWeek(userId)) {
-                props.navigation.push('Dangkylich');
-            } else {
-                createAlert("Notification", "You have registered shifts for next week. You cannot register again!");
-            }
+        //     if (! await getRegistrationData(userId)) {
+                props.navigation.push('Dangkylich', {registrationData: registrationData});
+        //     } else {
+        //         createAlert("Notification", "You have registered shifts for next week. You cannot register again!");
+        //     }
         }
     }
 
@@ -70,9 +72,6 @@ const Trangchu = (props) => {
         let userWorkData = await getWorkScheduleForCurrentWeek(userId);
         let updatedSchedule = await updateWorkSchedule(userWorkData, roleName);
         props.navigation.push('Xemlich', {updatedSchedule: updatedSchedule});
-        console.log('--------------');
-        // console.log(userWorkData);
-        // console.log(updatedSchedule);
     }
 
     const getUserCertificate = async () => {
@@ -167,9 +166,9 @@ const Trangchu = (props) => {
                                 name={'calendar-check-o'}
                                 size={100}
                                 color={'#FF4500'}
-                                onPress={() => checkRegistrationInfo()}
+                                onPress={() => registerSchedule()}
                             />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Dangkylich') }}>Sign Up </Text>
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { registerSchedule() }}>Sign Up </Text>
                         </View>
                     </View>) : null}
                     {roleName == "EMPLOYEE_FULLTIME" ? (<View style={{ width: '50%', height: '100%' }}>
@@ -178,9 +177,9 @@ const Trangchu = (props) => {
                                 name={'calendar-times-o'}
                                 size={100}
                                 color={'black'}
-                                onPress={() => checkRegistrationInfo()}
+                                onPress={() => registerSchedule()}
                             />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('OffDay') }}>Regist Off Day</Text>
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { registerSchedule() }}>Regist Off Day</Text>
                         </View>
                     </View>) : null}
                     </View>

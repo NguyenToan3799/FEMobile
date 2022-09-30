@@ -7,8 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Chungchi = props => {
-    console.log('--------------------------------');
-    console.log(props.route.params["certificates"]);
 
     let userCertificates = props.route.params["certificates"];
     return (

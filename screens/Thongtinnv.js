@@ -111,7 +111,6 @@ const Thongtinnv = props => {
             setEmailErrorMessage('Please fill in email');
             check = false;
         }
-        console.log(check);
         if (check) {
             let requestBody = {
                 "address": userInfoUpdate.address,
@@ -128,8 +127,6 @@ const Thongtinnv = props => {
                 "userName": userInfoUpdate.userName
             };
 
-            console.log(requestBody);
-
             const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
                 method: 'PUT',
                 headers: {
@@ -138,7 +135,6 @@ const Thongtinnv = props => {
                 },
                 body: JSON.stringify(requestBody),
             });
-            console.log(response);
             saveUserInfo(userInfoUpdate);
             setUserInfo(userInfoUpdate);
             createAlert("Notification", "You have successfully update user information!");
@@ -248,7 +244,6 @@ const Thongtinnv = props => {
                                 //     open={open}
                                 //     date={new Date(userInfo.dayOfBirth)}
                                 //     onConfirm={(date) => {
-                                //         console.log(date);
                                 //         setOpen(false);
                                 //         // setDate(date)
                                 //     }}
@@ -280,7 +275,6 @@ const Thongtinnv = props => {
                     <View style={styles.container}>
                         <Button title={buttonText} color="#A1C639"
                             onPress={() => {
-                                // console.log(userInfoUpdate);
                                 if (buttonText == "Edit") {
                                     setUserInfoUpdate(userInfo);
                                     setIsEditing(true);

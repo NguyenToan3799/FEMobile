@@ -26,7 +26,6 @@ const Login = (props) => {
 
     const getUsername = async (value) => {
         setUsername(value);
-        console.log(username + '---' + password + '---');
         checkEnableButton();
     }
 
@@ -36,10 +35,8 @@ const Login = (props) => {
     }
 
     const checkEnableButton = () => {
-        console.log('Check ' + username + '---' + password + '---');
         if ([null, undefined, ''].includes(username) || [null, undefined, ''].includes(password)) { setEnableButton(false) }
         else { setEnableButton(true); }
-        console.log(isEnableButton);
     }
 
     const checkLoginInfo = async () => {

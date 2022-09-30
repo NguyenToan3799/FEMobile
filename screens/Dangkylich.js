@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, ScrollView, Modal, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, Text, Image, ScrollView, Modal, Pressable, Alert, TouchableOpacity } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +9,8 @@ import moment from "moment";
 import DatePicker from 'react-native-neat-date-picker';
 import { Button } from "react-native-elements";
 import { getUserInfo } from '../utils/AsyncStorage';
+
+import { CheckBox } from 'react-native-elements'
 
 const nextDate = (dayIndex) => {
   let today = new Date();
@@ -20,13 +22,15 @@ const padTo2Digits = (num) => {
   return num.toString().padStart(2, '0');
 }
 
-const formatDate = (date) => {
-  return [
-    padTo2Digits(date.getDate()),
-    padTo2Digits(date.getMonth() + 1),
-    date.getFullYear(),
-  ].join('/');
-}
+Date.prototype.yyyymmdd = function () {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+  (mm > 9 ? '' : '0') + mm,
+  (dd > 9 ? '' : '0') + dd
+  ].join('-');
+};
 
 const Dangkylich = props => {
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -45,6 +49,18 @@ const Dangkylich = props => {
 
   let selectedShift = {};
 
+  let workSchedule = props.route.params["registrationData"];
+
+  const countNullItem = (subjectNames) => {
+    let count = 0
+    subjectNames.forEach(subject => {
+      if (subject == '' || subject == null) {
+        count += 1;
+      }
+    }
+    )
+    return count;
+  }
 
   const setSelectedShift = (dateDelta, shift) => {
     // let date = new Date();
@@ -73,29 +89,6 @@ const Dangkylich = props => {
     });
     setShowDatePicker(false);
   }
-
-  // util
-  const showConfirmDialog = (message, callback) => {
-    return Alert.alert(
-      "Are your sure?",
-      "Are you sure you want to remove this beautiful box?",
-      [
-        // The "Yes" button
-        {
-          text: "Yes",
-          onPress: () => {
-            setShowBox(false);
-
-          },
-        },
-        // The "No" button
-        // Does nothing but dismiss the dialog when tapped
-        {
-          text: "No",
-        },
-      ]
-    );
-  };
 
   // util
   const createAlert = (title, message, route) =>
@@ -189,7 +182,7 @@ const Dangkylich = props => {
           </View>
           <View style={[styles.container, { backgroundColor: '#C0C0C0', height: 80, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
-              
+
             </View>
             <View style={{ width: '60%', height: '100%' }}>
               <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, marginLeft: 90 }}> Week</Text>
@@ -197,9 +190,33 @@ const Dangkylich = props => {
               <Text style={{ color: 'black', fontFamily: 'Arial', fontSize: 20, marginTop: 10, textAlign: 'center' }}>{nextMondayString} - {nextSundayString}</Text>
             </View>
             <View style={{ width: '20%', height: '100%' }}>
-              
+
             </View>
           </View>
+          <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
+            <View style={{ width: '20%', height: '100%' }}>
+              <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>Monday </Text>
+              </View>
+            </View>
+            <View style={{ width: '60%', height: '100%', flexDirection: 'row' }}>
+              {/* <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}> */}
+              <CheckBox
+                title='Shift 1'
+                checked={true}
+              />
+              <CheckBox
+                title='Shift 2'
+                checked={true}
+              />
+              <CheckBox
+                title='Shift 3'
+                checked={true}
+              />
+              {/* </View> */}
+            </View>
+          </View>
+
           <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
               <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
@@ -382,8 +399,8 @@ const Dangkylich = props => {
               </View>
             </View>
           </View>
-          
-          <View style={[styles.container, {marginTop: 10}]}>
+
+          <View style={[styles.container, { marginTop: 10 }]}>
             <Button title="Confirm" color="#a1C639"
               onPress={() => {
                 Alert.alert(
@@ -524,7 +541,69 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  }
+  },
+  dropdown: {
+    height: 50,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  selectedStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 14,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    marginTop: 8,
+    marginRight: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  textSelectedStyle: {
+    marginRight: 5,
+    fontSize: 16,
+  },
 });
 
 
