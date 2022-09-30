@@ -193,21 +193,22 @@ const Dangkylich = props => {
 
             </View>
           </View>
-          <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
-            <View style={{ width: '20%', height: '100%' }}>
+          <View style={[styles.viewsigup, { borderWidth: 2, height: 120 }]}>
+            
               <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
                 <Text style={[styles.textThu, { marginTop: 15 }]}>Monday </Text>
               </View>
-            </View>
-            <View style={{ width: '60%', height: '100%', flexDirection: 'row' }}>
+            
+            <View style={{   flexDirection: 'row' }}>
               {/* <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}> */}
-              <CheckBox
+              <View ><CheckBox
                 title='Shift 1'
                 checked={true}
-              />
-              <CheckBox
-                title='Shift 2'
-                checked={true}
+              /></View>
+
+              <CheckBox 
+              title='Shift 2'
+              checked={true}
               />
               <CheckBox
                 title='Shift 3'
