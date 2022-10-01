@@ -178,7 +178,7 @@ const Dangkylich = props => {
         let requestURL = oldData[i] == null ? "http://api.ngocsonak.xyz:8181/api/registrationschedule/create" : "http://api.ngocsonak.xyz:8181/api/registrationschedule/";
         console.log(requestBody);
         console.log(method);
-        const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+        const response = await fetch(requestURL , {
           method: method,
           headers: {
             'Accept': '*/*',
