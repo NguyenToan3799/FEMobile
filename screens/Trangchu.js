@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
+import { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
@@ -52,31 +52,27 @@ const Trangchu = (props) => {
     const registerSchedule = async () => {
         let registrationData = await getRegistrationData(userId);
         console.log(registrationData);
-        // console.log('Checking registration info');
         if (roleName == 'EMPLOYEE_FULLTIME') {
-        //     if (! await isRegisteredDayOffForNextWeek(userId)) {
-                // props.navigation.push('OffDay', {registrationData: registrationData});
-        //     } else {
-        //         createAlert("Notification", "You have registered day off for next week. You cannot register again!");
-        //     }
         } else {
-        //     if (! await getRegistrationData(userId)) {
-                props.navigation.push('Dangkylich', {registrationData: registrationData});
-        //     } else {
-        //         createAlert("Notification", "You have registered shifts for next week. You cannot register again!");
-        //     }
+            props.navigation.push('Dangkylich', { registrationData: registrationData });
         }
+    }
+
+    const getWorkingHour = async () => {
+        let workingHourData = await getWorkingHourData(userId);
+        console.log(workingHourData);
+        props.navigation.push('Giolam', { workingHourData: workingHourData });
     }
 
     const getUserSchedule = async () => {
         let userWorkData = await getWorkScheduleForCurrentWeek(userId);
         let updatedSchedule = await updateWorkSchedule(userWorkData, roleName);
-        props.navigation.push('Xemlich', {updatedSchedule: updatedSchedule});
+        props.navigation.push('Xemlich', { updatedSchedule: updatedSchedule });
     }
 
     const getUserCertificate = async () => {
         let userCertificates = await getEmployeeCertificate(userId);
-        props.navigation.push('Chungchi', {certificates: userCertificates});
+        props.navigation.push('Chungchi', { certificates: userCertificates });
     }
 
     // const getRewardAndDiscipline
@@ -97,7 +93,7 @@ const Trangchu = (props) => {
                     <View style={{ width: '20%', height: '100%' }}>
                         <Text style={{ color: '#696969', marginTop: 25, textAlign: 'center', fontSize: 20 }}
                             onPress={() => { props.navigation.push('Home'); console.log(userInfo.fullName) }}  >Logout</Text>
-                        
+
                     </View>
 
 
@@ -127,9 +123,9 @@ const Trangchu = (props) => {
                                 name={'clock-o'}
                                 size={100}
                                 color={'#4169E1'}
-                                onPress={() => { getUserSchedule() }}
+                                onPress={() => { getWorkingHour()  }}
                             />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Giolam') }}>Check Working Hours</Text>
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { getWorkingHour() }}>Check Working Hours</Text>
                         </View>
                     </View>
                 </View>
@@ -160,28 +156,28 @@ const Trangchu = (props) => {
                 </View>
                 <View style={[styles.container1, { height: 200, flexDirection: 'row' }]}>
                     <View style={{ width: '50%', height: '100%' }}>
-                    {roleName === "EMPLOYEE_PARTIME" ? (<View style={{ width: '50%', height: '100%' }}>
-                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
-                            <Icon style={{ textAlign: 'center', margin: 15 }}
-                                name={'calendar-check-o'}
-                                size={100}
-                                color={'#FF4500'}
-                                onPress={() => registerSchedule()}
-                            />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { registerSchedule() }}>Sign Up </Text>
-                        </View>
-                    </View>) : null}
-                    {roleName == "EMPLOYEE_FULLTIME" ? (<View style={{ width: '50%', height: '100%' }}>
-                        <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
-                            <Icon style={{ textAlign: 'center', margin: 15 }}
-                                name={'calendar-times-o'}
-                                size={100}
-                                color={'black'}
-                                onPress={() => registerSchedule()}
-                            />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { registerSchedule() }}>Regist Off Day</Text>
-                        </View>
-                    </View>) : null}
+                        {roleName === "EMPLOYEE_PARTIME" ? (<View style={{ width: '50%', height: '100%' }}>
+                            <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
+                                <Icon style={{ textAlign: 'center', margin: 15 }}
+                                    name={'calendar-check-o'}
+                                    size={100}
+                                    color={'#FF4500'}
+                                    onPress={() => registerSchedule()}
+                                />
+                                <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { registerSchedule() }}>Sign Up </Text>
+                            </View>
+                        </View>) : null}
+                        {roleName == "EMPLOYEE_FULLTIME" ? (<View style={{ width: '50%', height: '100%' }}>
+                            <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
+                                <Icon style={{ textAlign: 'center', margin: 15 }}
+                                    name={'calendar-times-o'}
+                                    size={100}
+                                    color={'black'}
+                                    onPress={() => registerSchedule()}
+                                />
+                                <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { registerSchedule() }}>Regist Off Day</Text>
+                            </View>
+                        </View>) : null}
                     </View>
                     <View style={{ width: '50%', height: '100%' }}>
                         <View style={{ backgroundColor: '#F0FFF0', height: 180, width: 170, marginVertical: 10, marginLeft: 20, borderRadius: 30 }}>
@@ -195,7 +191,7 @@ const Trangchu = (props) => {
                         </View>
                     </View>
                 </View>
-                
+
             </ScrollView>
         </SafeAreaView>
     )

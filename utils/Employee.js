@@ -54,6 +54,49 @@ const getRegistrationData = async (userId) => {
     return listData;
 }
 
+const getWorkingHourData = async (userId) => {
+    // let check = false;
+    let nextMonday = nextDate(1);
+    let sub = require('date-fns/sub');
+    nextMonday = sub(nextMonday, { days: 7 });
+    nextMonday.setHours(0, 0, 0, 0);
+    let add = require('date-fns/add');
+    const nextSunday = add(nextMonday, { days: 6 })
+    nextSunday.setHours(23, 59, 59, 0);
+    let listData = [null, null, null, null, null, null, null];
+    let listDay = getListDayCurrentWeek();
+    await fetch(`http://api.ngocsonak.xyz:8181/api/workinghour/get-by-user-id?id=${userId}`, {
+        method: 'GET',
+        heaaders: {
+            Accept: '*/*',
+        }
+    }).then(response => response.json()).then(async (result) => {
+        // if (result.length == 0) check = false;
+        // else {
+        //     check = await getRegistrationDataForNextWeek(result);
+        // }
+        console.log(result);
+        for (let item of result) {
+            for (let i = 0; i < 7; i++) {
+                let itemDate = new Date(item.workSchedule.date);
+                if (itemDate >= listDay[i] && itemDate <= listDay[i + 1]) {
+                    listData[i] = item;
+                    // if (roleName == 'EMPLOYEE_FULLTIME') {
+                    //     updatedSchedule[i] = 'OFF';
+                    // } else {
+                    //     if (item['shift1']) updatedSchedule[i] = 'Ca 1';
+                    //     else if (item['shift2']) updatedSchedule[i] = 'Ca 2';
+                    //     else if (item['shift3']) updatedSchedule[i] = 'Ca 3';
+                    // }
+                    break;
+                }
+            }
+        }
+    }).catch(error => console.log('error', error));
+    return listData;
+}
+
+
 const isRegisteredDayOffForNextWeek = async (userId) => {
     let check = false;
     await fetch(`http://api.ngocsonak.xyz:8181/api/registrationschedule/get-by-user-id?id=${userId}`, {
@@ -223,4 +266,4 @@ const getEmployeeRewardandDiscipline = async (userId) => {
     return listRewardAndDiscipline;
 }
 
-export { updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeRewardandDiscipline, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };
+export { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeRewardandDiscipline, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };
