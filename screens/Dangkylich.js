@@ -175,6 +175,7 @@ const Dangkylich = props => {
           "userID": userId
         };
         let method = oldData[i] == null ? "POST" : "PUT";
+        let requestURL = oldData[i] == null ? "http://api.ngocsonak.xyz:8181/api/registrationschedule/create" : "http://api.ngocsonak.xyz:8181/api/registrationschedule/";
         console.log(requestBody);
         console.log(method);
         const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
@@ -185,7 +186,6 @@ const Dangkylich = props => {
           },
           body: JSON.stringify(requestBody),
         });
-        console.log(response);
       }
 
     }
