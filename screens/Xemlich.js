@@ -10,6 +10,7 @@ import Submit from '../components/Submit';
 import { nextDate } from "../utils/Utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { saveCheckInTime, getCheckInTime, saveCheckOutTime, getCheckOutTime } from "../utils/AsyncStorage";
+import WifiManager from "react-native-wifi-reborn";
 
 const createAlert = (title, message) =>
   Alert.alert(
@@ -52,6 +53,9 @@ const Xemlich = props => {
   let workSchedule = props.route.params["updatedSchedule"];
   const [isEnableCheckin, setEnableCheckin] = useState(true);
   const [isEnableCheckout, setEnableCheckout] = useState(true);
+
+  const CURRENT_WIFI_SSID = "Black Wolf";
+
   // console.log(props.route.params["updatedSchedule"]);
   // console.log('++++++++++++++++++');
   //   const [userInfo, setUserInfo] = useState({
@@ -130,46 +134,72 @@ const Xemlich = props => {
   getCheckInTime().then(time => time != null ? setCheckInTime(time) : null).catch(error => console.log(error));
 
   const checkIn = async (index) => {
-    let time = new Date();
-    // workSchedule[index]["timeIn"] = time.yyyymmdd();
-    await saveCheckInTime(time.toString());
-    createAlert("Notification", "You have checked in successfully!");
-    // setEnableCheckin(false);
-    setCheckInTime(time.toString());
+    await WifiManager.getCurrentWifiSSID().then(
+      async (ssid) => {
+        console.log("Your current connected wifi SSID is " + ssid);
+        if (ssid.includes(CURRENT_WIFI_SSID)) {
+          let time = new Date();
+          // workSchedule[index]["timeIn"] = time.yyyymmdd();
+          await saveCheckInTime(time.toString());
+          createAlert("Notification", "You have checked in successfully!");
+          // setEnableCheckin(false);
+          setCheckInTime(time.toString());
+        } else {
+          createAlert("Notification", "You can only checkin by Passio Widfi");
+        }
+      },
+      () => {
+        console.log("Cannot get current SSID!");
+      }
+    );
+
   }
 
   const checkOut = async (index) => {
-    // workSchedule[index]["timeOut"] = new Date().yyyymmdd();
-    let temp = workSchedule[index];
-    checkInTime = await getCheckInTime();
-    let checkOutTime = new Date().toString();
-    let requestBody = {
-      "timeIn": checkInTime,
-      "timeOut": checkOutTime,
-      "totalWorkingHour": Math.round(diff_hours(checkOutTime, checkInTime) * 100) / 100,
-      "userID": temp["user"]["userID"],
-      "workScheduleID": temp["workScheduleID"],
-      "workingHourID": generateIdByNum(7),
-      "workingHourStatus": true
-    }
+    await WifiManager.getCurrentWifiSSID().then(
+      async (ssid) => {
+        console.log("Your current connected wifi SSID is " + ssid);
+        if (ssid.includes(CURRENT_WIFI_SSID)) {
+          // workSchedule[index]["timeOut"] = new Date().yyyymmdd();
+          let temp = workSchedule[index];
+          checkInTime = await getCheckInTime();
+          let checkOutTime = new Date().toString();
+          let requestBody = {
+            "timeIn": checkInTime,
+            "timeOut": checkOutTime,
+            "totalWorkingHour": Math.round(diff_hours(checkOutTime, checkInTime) * 100) / 100,
+            "userID": temp["user"]["userID"],
+            "workScheduleID": temp["workScheduleID"],
+            "workingHourID": generateIdByNum(7),
+            "workingHourStatus": true
+          }
 
-    console.log(requestBody);
+          console.log(requestBody);
 
-    const response = await fetch("http://api.ngocsonak.xyz:8181/api/workinghour/create", {
-      method: 'POST',
-      headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json'
+          const response = await fetch("http://api.ngocsonak.xyz:8181/api/workinghour/create", {
+            method: 'POST',
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          console.log(response);
+
+          saveCheckInTime('');
+
+          createAlert("Notification", "You have checked out successfully!");
+          setEnableCheckout(false);
+        } else {
+          createAlert("Notification", "You can only checkout by Passio Widfi");
+        }
       },
-      body: JSON.stringify(requestBody),
-    });
+      () => {
+        console.log("Cannot get current SSID!");
+      }
+    );
 
-    console.log(response);
-
-    saveCheckInTime('');
-
-    createAlert("Notification", "You have checked out successfully!");
-    setEnableCheckout(false);
   }
 
   const totalShift = (shiftData) => {
