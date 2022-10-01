@@ -60,8 +60,12 @@ const Nangluc = props => {
                         <Text style={[styles.textdanhgia, { width: '70%' }]}>-Time manager :  </Text>
                         <Text style={[styles.textdanhgia, { width: '30%' }]}>{assessment["timeManagement"]}</Text>
                     </View>
+                    <View style={{ flexDirection: 'row', marginTop: 7 }}>
+                        <Text style={[styles.textdanhgia, { width: '70%' }]}>-Description :  </Text>
+                        <Text style={[styles.textdanhgia, { width: '30%' }]}>{assessment["description"]}</Text>
+                    </View>
                     <View style={[styles.container]}>
-                    <Text style={{ color: '#00AA00', fontFamily: 'Arial', fontSize: 25 }}>{assessment["description"]}</Text>
+                    <Text style={{ color: '#00AA00', fontFamily: 'Arial', fontSize: 25 }}>{assessment["total"] >= 70 ? "Reward" : "Discipline"}</Text>
                 </View>
                 </View>
                 <View style={styles.container}>
