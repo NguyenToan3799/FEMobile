@@ -42,25 +42,63 @@ const Giolam = props => {
 
                 <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
                     <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Monday : </Text>
+                    </View>
+                    <View style={{ width: '70%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
+                    </View>
+                </View>
+                <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
+                    <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Tuesday : </Text>
+                    </View>
+                    <View style={{ width: '70%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
+                    </View>
+                </View>
+                <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
+                    <View style={{ width: '30%', height: '100%' }}>
                         <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Wednesday : </Text>
                     </View>
                     <View style={{ width: '70%', height: '100%' }}>
                         <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
                     </View>
                 </View>
-                <View style={[styles.viewgio]}>
-
+                <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
+                    <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Thursday : </Text>
+                    </View>
+                    <View style={{ width: '70%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
+                    </View>
                 </View>
-                <View style={[styles.viewgio]}>
-
+                <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
+                    <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Friday : </Text>
+                    </View>
+                    <View style={{ width: '70%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
+                    </View>
                 </View>
-                <View style={[styles.viewgio]}>
-
+                <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
+                    <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Saturday : </Text>
+                    </View>
+                    <View style={{ width: '70%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
+                    </View>
                 </View>
-                <View style={[styles.viewgio]}>
-
+                <View style={[styles.viewgio, { marginTop: 10, flexDirection: 'row' }]}>
+                    <View style={{ width: '30%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 20, marginLeft: 1, fontSize: 20 }}> Sunday : </Text>
+                    </View>
+                    <View style={{ width: '70%', height: '100%' }}>
+                        <Text style={{ fontFamily: 'Arial', marginTop: 22, fontSize: 20, color: "blue", textAlign: "center" }}> 6 tiếng </Text>
+                    </View>
                 </View>
-                <Button title="View Total Time In Month" onPress={() => { props.navigation.push('TotalTime') }} />
+                <View style={[styles.container, { backgroundColor: '#3366CC', height: 100, borderWidth: 1, borderColor: 'red', borderRadius: 50, width: '100%', alignSelf: 'center', marginTop: 10 }]}>
+                    <Text style={{ color: 'white', fontFamily: 'Arial', fontSize: 20 }}> Total Time In Month: 64</Text>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
