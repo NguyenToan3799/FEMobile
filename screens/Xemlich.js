@@ -10,7 +10,9 @@ import Submit from '../components/Submit';
 import { nextDate } from "../utils/Utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { saveCheckInTime, getCheckInTime, saveCheckOutTime, getCheckOutTime } from "../utils/AsyncStorage";
-import WifiManager from "react-native-wifi-reborn";
+import { PermissionsAndroid } from 'react-native';
+import * as Network from 'expo-network';
+
 
 const createAlert = (title, message) =>
   Alert.alert(
@@ -134,71 +136,65 @@ const Xemlich = props => {
   getCheckInTime().then(time => time != null ? setCheckInTime(time) : null).catch(error => console.log(error));
 
   const checkIn = async (index) => {
-    await WifiManager.getCurrentWifiSSID().then(
-      async (ssid) => {
-        console.log("Your current connected wifi SSID is " + ssid);
-        if (ssid.includes(CURRENT_WIFI_SSID)) {
-          let time = new Date();
-          // workSchedule[index]["timeIn"] = time.yyyymmdd();
-          await saveCheckInTime(time.toString());
-          createAlert("Notification", "You have checked in successfully!");
-          // setEnableCheckin(false);
-          setCheckInTime(time.toString());
-        } else {
-          createAlert("Notification", "You can only checkin by Passio Widfi");
-        }
-      },
-      () => {
-        console.log("Cannot get current SSID!");
-      }
-    );
+    let time = new Date();
+    // workSchedule[index]["timeIn"] = time.yyyymmdd();
+    await saveCheckInTime(time.toString());
+    createAlert("Notification", "You have checked in successfully!");
+    // setEnableCheckin(false);
+    setCheckInTime(time.toString());
+    // let ipAddress = await Network.getIpAddressAsync();
+    // console.log(ipAddress);
+    // await WifiManager.getCurrentWifiSSID().then(
+    //   async (ssid) => {
+    //     console.log("Your current connected wifi SSID is " + ssid);
+    //     if (ssid.includes(CURRENT_WIFI_SSID)) {
+    //       let time = new Date();
+    //       // workSchedule[index]["timeIn"] = time.yyyymmdd();
+    //       await saveCheckInTime(time.toString());
+    //       createAlert("Notification", "You have checked in successfully!");
+    //       // setEnableCheckin(false);
+    //       setCheckInTime(time.toString());
+    //     } else {
+    //       createAlert("Notification", "You can only checkin by Passio Widfi");
+    //     }
+    //   },
+    //   () => {
+    //     console.log("Cannot get current SSID!");
+    //   }
+    // );
 
   }
 
   const checkOut = async (index) => {
-    await WifiManager.getCurrentWifiSSID().then(
-      async (ssid) => {
-        console.log("Your current connected wifi SSID is " + ssid);
-        if (ssid.includes(CURRENT_WIFI_SSID)) {
-          // workSchedule[index]["timeOut"] = new Date().yyyymmdd();
-          let temp = workSchedule[index];
-          checkInTime = await getCheckInTime();
-          let checkOutTime = new Date().toString();
-          let requestBody = {
-            "timeIn": checkInTime,
-            "timeOut": checkOutTime,
-            "totalWorkingHour": Math.round(diff_hours(checkOutTime, checkInTime) * 100) / 100,
-            "userID": temp["user"]["userID"],
-            "workScheduleID": temp["workScheduleID"],
-            "workingHourID": generateIdByNum(7),
-            "workingHourStatus": true
-          }
+    let temp = workSchedule[index];
+    console.log(index);
+    checkInTime = await getCheckInTime();
+    let checkOutTime = new Date().toString();
+    let requestBody = {
+      "timeIn": checkInTime,
+      "timeOut": checkOutTime,
+      "totalWorkingHour": Math.round(diff_hours(checkOutTime, checkInTime) * 100) / 100,
+      "userID": temp["user"]["userID"],
+      "workScheduleID": temp["workScheduleID"],
+      "workingHourID": generateIdByNum(7),
+      "workingHourStatus": true
+    }
 
-          console.log(requestBody);
+    console.log(requestBody);
 
-          const response = await fetch("http://api.ngocsonak.xyz:8181/api/workinghour/create", {
-            method: 'POST',
-            headers: {
-              'Accept': '*/*',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody),
-          });
-
-          console.log(response);
-
-          saveCheckInTime('');
-
-          createAlert("Notification", "You have checked out successfully!");
-          setEnableCheckout(false);
-        } else {
-          createAlert("Notification", "You can only checkout by Passio Widfi");
-        }
+    const response = await fetch("http://api.ngocsonak.xyz:8181/api/workinghour/create", {
+      method: 'POST',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
       },
-      () => {
-        console.log("Cannot get current SSID!");
-      }
-    );
+      body: JSON.stringify(requestBody),
+    });
+
+    saveCheckInTime('');
+
+    createAlert("Notification", "You have checked out successfully!");
+    setEnableCheckout(false);
 
   }
 
@@ -292,14 +288,14 @@ const Xemlich = props => {
             }
             {workSchedule[0] != null && totalShift(workSchedule[0]) == 1 ?
               <View>
-                {workSchedule[0]['shift1'] && isCheckinShift1 ?
+                {workSchedule[0]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
                     onPress={() => { checkIn(0) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[0]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[0]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
                     onPress={() => { checkOut(0) }}
                     underlayColor='#fff'>
@@ -312,14 +308,14 @@ const Xemlich = props => {
             }
             {workSchedule[0] != null && totalShift(workSchedule[0]) == 1 ?
               <View>
-                {workSchedule[0]['shift2'] && isCheckinShift2 ?
+                {workSchedule[0]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
                     onPress={() => { checkIn(0) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[0]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[0]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
                     onPress={() => { checkOut(0) }}
                     underlayColor='#fff'>
@@ -332,14 +328,14 @@ const Xemlich = props => {
             }
             {workSchedule[0] != null && totalShift(workSchedule[0]) == 1 ?
               <View>
-                {workSchedule[0]['shift3'] && isCheckinShift3 ?
+                {workSchedule[0]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
                     onPress={() => { checkIn(0) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[0]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[0]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
                     onPress={() => { checkOut(0) }}
                     underlayColor='#fff'>
@@ -379,12 +375,12 @@ const Xemlich = props => {
             {workSchedule[1] != null && totalShift(workSchedule[1]) == 2 && new Date(workSchedule[1]['date']) >= startDate && new Date(workSchedule[1]['date']) <= endDate ?
               <View>
                 <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                  onPress={() => { checkIn(0) }}
+                  onPress={() => { checkIn(1) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                  onPress={() => { checkOut(0) }}
+                  onPress={() => { checkOut(1) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkout</Text>
                 </TouchableOpacity>
@@ -394,16 +390,16 @@ const Xemlich = props => {
             }
             {workSchedule[1] != null && totalShift(workSchedule[1]) == 1 ?
               <View>
-                {workSchedule[1]['shift1'] && isCheckinShift1 ?
+                {workSchedule[1]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(1) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[1]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[1]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(1) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -414,16 +410,16 @@ const Xemlich = props => {
             }
             {workSchedule[1] != null && totalShift(workSchedule[1]) == 1 ?
               <View>
-                {workSchedule[1]['shift2'] && isCheckinShift2 ?
+                {workSchedule[1]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(1) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[1]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[1]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(1) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -434,16 +430,16 @@ const Xemlich = props => {
             }
             {workSchedule[1] != null && totalShift(workSchedule[1]) == 1 ?
               <View>
-                {workSchedule[1]['shift3'] && isCheckinShift3 ?
+                {workSchedule[1]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(1) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[1]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[1]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(1) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -481,12 +477,12 @@ const Xemlich = props => {
             {workSchedule[2] != null && totalShift(workSchedule[2]) == 2 && new Date(workSchedule[2]['date']) >= startDate && new Date(workSchedule[2]['date']) <= endDate ?
               <View>
                 <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                  onPress={() => { checkIn(0) }}
+                  onPress={() => { checkIn(2) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                  onPress={() => { checkOut(0) }}
+                  onPress={() => { checkOut(2) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkout</Text>
                 </TouchableOpacity>
@@ -496,16 +492,16 @@ const Xemlich = props => {
             }
             {workSchedule[2] != null && totalShift(workSchedule[2]) == 1 ?
               <View>
-                {workSchedule[2]['shift1'] && isCheckinShift1 ?
+                {workSchedule[2]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(2) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[2]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[2]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(2) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -516,16 +512,16 @@ const Xemlich = props => {
             }
             {workSchedule[2] != null && totalShift(workSchedule[2]) == 1 ?
               <View>
-                {workSchedule[2]['shift2'] && isCheckinShift2 ?
+                {workSchedule[2]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(2) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[2]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[2]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(2) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -536,16 +532,16 @@ const Xemlich = props => {
             }
             {workSchedule[2] != null && totalShift(workSchedule[2]) == 1 ?
               <View>
-                {workSchedule[2]['shift3'] && isCheckinShift3 ?
+                {workSchedule[2]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(2) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[2]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[2]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(2) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -583,12 +579,12 @@ const Xemlich = props => {
             {workSchedule[3] != null && totalShift(workSchedule[3]) == 2 && new Date(workSchedule[3]['date']) >= startDate && new Date(workSchedule[3]['date']) <= endDate ?
               <View>
                 <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                  onPress={() => { checkIn(0) }}
+                  onPress={() => { checkIn(3) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                  onPress={() => { checkOut(0) }}
+                  onPress={() => { checkOut(3) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkout</Text>
                 </TouchableOpacity>
@@ -598,16 +594,16 @@ const Xemlich = props => {
             }
             {workSchedule[3] != null && totalShift(workSchedule[3]) == 1 ?
               <View>
-                {workSchedule[3]['shift1'] && isCheckinShift1 ?
+                {workSchedule[3]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(3) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[3]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[3]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(3) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -618,16 +614,16 @@ const Xemlich = props => {
             }
             {workSchedule[3] != null && totalShift(workSchedule[3]) == 1 ?
               <View>
-                {workSchedule[3]['shift2'] && isCheckinShift2 ?
+                {workSchedule[3]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(3) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[3]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[3]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(3) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -638,16 +634,16 @@ const Xemlich = props => {
             }
             {workSchedule[3] != null && totalShift(workSchedule[3]) == 1 ?
               <View>
-                {workSchedule[3]['shift3'] && isCheckinShift3 ?
+                {workSchedule[3]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(3) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[3]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[3]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(3) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -685,12 +681,12 @@ const Xemlich = props => {
             {workSchedule[4] != null && totalShift(workSchedule[4]) == 2 && new Date(workSchedule[4]['date']) >= startDate && new Date(workSchedule[4]['date']) <= endDate ?
               <View>
                 <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                  onPress={() => { checkIn(0) }}
+                  onPress={() => { checkIn(4) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                  onPress={() => { checkOut(0) }}
+                  onPress={() => { checkOut(4) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkout</Text>
                 </TouchableOpacity>
@@ -700,16 +696,16 @@ const Xemlich = props => {
             }
             {workSchedule[4] != null && totalShift(workSchedule[4]) == 1 ?
               <View>
-                {workSchedule[4]['shift1'] && isCheckinShift1 ?
+                {workSchedule[4]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(4) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[4]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[4]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(4) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -720,16 +716,16 @@ const Xemlich = props => {
             }
             {workSchedule[4] != null && totalShift(workSchedule[4]) == 1 ?
               <View>
-                {workSchedule[4]['shift2'] && isCheckinShift2 ?
+                {workSchedule[4]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(4) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[4]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[4]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(4) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -740,16 +736,16 @@ const Xemlich = props => {
             }
             {workSchedule[4] != null && totalShift(workSchedule[4]) == 1 ?
               <View>
-                {workSchedule[4]['shift3'] && isCheckinShift3 ?
+                {workSchedule[4]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(4) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[4]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[4]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(4) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -787,12 +783,12 @@ const Xemlich = props => {
             {workSchedule[5] != null && totalShift(workSchedule[5]) == 2 && new Date(workSchedule[5]['date']) >= startDate && new Date(workSchedule[5]['date']) <= endDate ?
               <View>
                 <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                  onPress={() => { checkIn(0) }}
+                  onPress={() => { checkIn(5) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                  onPress={() => { checkOut(0) }}
+                  onPress={() => { checkOut(5) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkout</Text>
                 </TouchableOpacity>
@@ -802,16 +798,16 @@ const Xemlich = props => {
             }
             {workSchedule[5] != null && totalShift(workSchedule[5]) == 1 ?
               <View>
-                {workSchedule[5]['shift1'] && isCheckinShift1 ?
+                {workSchedule[5]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(5) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[5]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[5]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(5) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -822,16 +818,16 @@ const Xemlich = props => {
             }
             {workSchedule[5] != null && totalShift(workSchedule[5]) == 1 ?
               <View>
-                {workSchedule[5]['shift2'] && isCheckinShift2 ?
+                {workSchedule[5]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(5) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[5]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[5]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(5) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -842,16 +838,16 @@ const Xemlich = props => {
             }
             {workSchedule[5] != null && totalShift(workSchedule[5]) == 1 ?
               <View>
-                {workSchedule[5]['shift3'] && isCheckinShift3 ?
+                {workSchedule[5]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(5) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[5]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[5]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(5) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -889,12 +885,12 @@ const Xemlich = props => {
             {workSchedule[6] != null && totalShift(workSchedule[6]) == 2 && new Date(workSchedule[6]['date']) >= startDate && new Date(workSchedule[6]['date']) <= endDate ?
               <View>
                 <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                  onPress={() => { checkIn(0) }}
+                  onPress={() => { checkIn(6) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                  onPress={() => { checkOut(0) }}
+                  onPress={() => { checkOut(6) }}
                   underlayColor='#fff'>
                   <Text style={styles.checkText}>Checkout</Text>
                 </TouchableOpacity>
@@ -904,16 +900,16 @@ const Xemlich = props => {
             }
             {workSchedule[6] != null && totalShift(workSchedule[6]) == 1 ?
               <View>
-                {workSchedule[6]['shift1'] && isCheckinShift1 ?
+                {workSchedule[6]['shift1'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(6) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[6]['shift1'] && isCheckoutShift1 ?
+                {workSchedule[6]['shift1'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(6) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -924,16 +920,16 @@ const Xemlich = props => {
             }
             {workSchedule[6] != null && totalShift(workSchedule[6]) == 1 ?
               <View>
-                {workSchedule[6]['shift2'] && isCheckinShift2 ?
+                {workSchedule[6]['shift2'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(6) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[6]['shift2'] && isCheckoutShift2 ?
+                {workSchedule[6]['shift2'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(6) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
@@ -944,16 +940,16 @@ const Xemlich = props => {
             }
             {workSchedule[6] != null && totalShift(workSchedule[6]) == 1 ?
               <View>
-                {workSchedule[6]['shift3'] && isCheckinShift3 ?
+                {workSchedule[6]['shift3'] ?
                   <TouchableOpacity style={styles.checkButton} disabled={checkInTime.length > 0}
-                    onPress={() => { checkIn(0) }}
+                    onPress={() => { checkIn(6) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkin</Text>
                   </TouchableOpacity>
                   : null}
-                {workSchedule[6]['shift3'] && isCheckoutShift3 ?
+                {workSchedule[6]['shift3'] ?
                   <TouchableOpacity style={[styles.checkButton, { marginVertical: 10 }]} disabled={!checkInTime > 0}
-                    onPress={() => { checkOut(0) }}
+                    onPress={() => { checkOut(6) }}
                     underlayColor='#fff'>
                     <Text style={styles.checkText}>Checkout</Text>
                   </TouchableOpacity>
