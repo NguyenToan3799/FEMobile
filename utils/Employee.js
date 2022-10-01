@@ -96,6 +96,55 @@ const getWorkingHourData = async (userId) => {
     return listData;
 }
 
+const getAssesmentData = async (userId) => {
+    let assesment = {
+        "assessmentID": "id",
+        "date": "2022-10-01",
+        "employeeHonesty": 10,
+        "enthusiasmAtWork": 10,
+        "respectColleaguesAndCustomers": 10,
+        "timeManagement": 10,
+        "progressiveWill": 10,
+        "becarefullAtWork": 10,
+        "growAtWork": 10,
+        "levelOfWorkCompletion": 10,
+        "description": "Lam tot",
+        "total": 80,
+        "user": {
+          "userID": "bao",
+          "userName": "Quoc Bao",
+          "password": "123",
+          "fullName": "Nguyen Quoc Bao",
+          "phoneNumber": "0191238822",
+          "sex": "Nam",
+          "dayOfBirth": "20/10/1999",
+          "address": "Sky9",
+          "email": "bao@gmail.com",
+          "status": true,
+          "role": {
+            "id": "4",
+            "name": "EMPLOYEE_PARTIME"
+          },
+          "store": {
+            "storeID": "dxh",
+            "storeName": "Do Xuan Hop",
+            "address": "Do Xuan Hop"
+          }
+        }
+      };
+    await fetch(`http://api.ngocsonak.xyz:8181/api/employeeassessment/get-by-user-id?id=${userId}`, {
+        method: 'GET',
+        heaaders: {
+            Accept: '*/*',
+        }
+    }).then(response => response.json()).then(async (result) => {
+        result.sort((a, b) => new Date(a.date) < new Date(b.date));
+        console.log(result);
+        if (result.length > 0) assesment = result[0];
+    }).catch(error => console.log('error', error));
+    return assesment;
+}
+
 
 const isRegisteredDayOffForNextWeek = async (userId) => {
     let check = false;
@@ -266,4 +315,4 @@ const getEmployeeRewardandDiscipline = async (userId) => {
     return listRewardAndDiscipline;
 }
 
-export { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeRewardandDiscipline, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };
+export { getAssesmentData, getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeRewardandDiscipline, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule } from '../utils/Employee';
+import { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule, getAssesmentData } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
@@ -73,6 +73,12 @@ const Trangchu = (props) => {
     const getUserCertificate = async () => {
         let userCertificates = await getEmployeeCertificate(userId);
         props.navigation.push('Chungchi', { certificates: userCertificates });
+    }
+
+    const getUserAssesment = async () => {
+        let assessment = await getAssesmentData(userId);
+        console.log(assessment);
+        props.navigation.push('Nangluc', {assessment: assessment});
     }
 
     // const getRewardAndDiscipline
@@ -148,9 +154,9 @@ const Trangchu = (props) => {
                                 name={'list'}
                                 size={100}
                                 color={'#7FFFD4'}
-                                onPress={() => { props.navigation.push('Nangluc') }}
+                                onPress={() => { getUserAssesment() }}
                             />
-                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { props.navigation.push('Nangluc') }}>View Assessment</Text>
+                            <Text style={{ textAlign: 'center', fontSize: 20, fontFamily: 'Arial' }} onPress={() => { getUserAssesment() }}>View Assessment</Text>
                         </View>
                     </View>
                 </View>

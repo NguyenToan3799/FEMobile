@@ -11,7 +11,7 @@ import { nextDate } from "../utils/Utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { saveCheckInTime, getCheckInTime, saveCheckOutTime, getCheckOutTime } from "../utils/AsyncStorage";
 import { PermissionsAndroid } from 'react-native';
-import * as Network from 'expo-network';
+import NetInfo from "@react-native-community/netinfo"; 
 
 
 const createAlert = (title, message) =>
@@ -142,26 +142,31 @@ const Xemlich = props => {
     createAlert("Notification", "You have checked in successfully!");
     // setEnableCheckin(false);
     setCheckInTime(time.toString());
-    // let ipAddress = await Network.getIpAddressAsync();
-    // console.log(ipAddress);
-    // await WifiManager.getCurrentWifiSSID().then(
-    //   async (ssid) => {
-    //     console.log("Your current connected wifi SSID is " + ssid);
-    //     if (ssid.includes(CURRENT_WIFI_SSID)) {
-    //       let time = new Date();
-    //       // workSchedule[index]["timeIn"] = time.yyyymmdd();
-    //       await saveCheckInTime(time.toString());
-    //       createAlert("Notification", "You have checked in successfully!");
-    //       // setEnableCheckin(false);
-    //       setCheckInTime(time.toString());
-    //     } else {
-    //       createAlert("Notification", "You can only checkin by Passio Widfi");
-    //     }
+
+    // const granted = await PermissionsAndroid.request(
+    //   PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    //   {
+    //     title: 'Location permission is required for WiFi connections',
+    //     message:
+    //       'This app needs location permission as this is required  ' +
+    //       'to scan for wifi networks.',
+    //     buttonNegative: 'DENY',
+    //     buttonPositive: 'ALLOW',
     //   },
-    //   () => {
-    //     console.log("Cannot get current SSID!");
-    //   }
     // );
+    // if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //   // You can now use react-native-wifi-reborn
+    //   NetInfo.fetch().then(state => {
+    //     console.log("BSSID", state.details.bssid);
+    //     if (state.details.bssid == "02:00:00:00:00:00") {
+
+    //     } else {
+    //       createAlert("Notification", "Please checkin by Passio wifi!");
+    //     }
+    //   });
+    // } else {
+    //   // Permission denied
+    // }
 
   }
 
