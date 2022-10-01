@@ -127,7 +127,7 @@ const Thongtinnv = props => {
                 "userName": userInfoUpdate.userName
             };
 
-            const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+            const response = await fetch("http://api.ngocsonak.xyz:8181/api/user", {
                 method: 'PUT',
                 headers: {
                     'Accept': '*/*',
@@ -136,7 +136,7 @@ const Thongtinnv = props => {
                 body: JSON.stringify(requestBody),
             });
             saveUserInfo(userInfoUpdate);
-            setUserInfo(userInfoUpdate);
+            await setUserInfo(userInfoUpdate);
             createAlert("Notification", "You have successfully update user information!");
             setIsEditing(false);
             setButtonText("Edit");
