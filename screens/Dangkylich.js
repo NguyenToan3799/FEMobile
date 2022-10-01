@@ -11,11 +11,26 @@ import { Button } from "react-native-elements";
 import { getUserInfo } from '../utils/AsyncStorage';
 
 import { CheckBox } from 'react-native-elements'
+import { getEmployeeCertificate } from "../utils/Employee";
 
 const nextDate = (dayIndex) => {
   let today = new Date();
   today.setDate(today.getDate() + (dayIndex - 1 - today.getDay() + 7) % 7 + 1);
   return today;
+}
+
+const getListDayNextWeek = () => {
+  let listDay = [];
+  const nextMonday = nextDate(1);
+  nextMonday.setHours(0, 0, 0);
+
+  let add = require('date-fns/add');
+
+  for (let i = 0; i < 8; i++) {
+    let nextDay = add(nextMonday, { days: i });
+    listDay.push(nextDay);
+  }
+  return listDay;
 }
 
 const padTo2Digits = (num) => {
@@ -33,7 +48,6 @@ Date.prototype.yyyymmdd = function () {
 };
 
 const Dangkylich = props => {
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState();
 
@@ -49,7 +63,52 @@ const Dangkylich = props => {
 
   let selectedShift = {};
 
-  let workSchedule = props.route.params["registrationData"];
+  var temp = [
+    [false, false, false],
+    [false, false, false],
+    [false, false, false],
+    [false, false, false],
+    [false, false, false],
+    [false, false, false],
+    [false, false, false],
+  ];
+
+  props.route.params["registrationData"].map((item, index) => {
+    if (item != null) {
+      if (item['shift1']) {
+        temp[index][0] = true;
+      }
+      if (item['shift2']) {
+        temp[index][1] = true;
+      }
+      if (item['shift3']) {
+        temp[index][2] = true;
+      }
+    }
+  });
+
+  const [registrationSchedule, setRegistrationSchedule] = useState(temp);
+  let listDay = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  const handlePressCheckbox = (item, index) => {
+    temp = [...registrationSchedule];
+    if (temp[item][index]) {
+      temp[item][index] = false;
+    } else {
+      if (temp[item].filter((value) => value).length < 2) {
+        temp[item][index] = true;
+      }
+    }
+    setRegistrationSchedule(temp);
+  }
+
+
+
+
+
+
+
+  // setRegistrationSchedule(temp);
 
   const countNullItem = (subjectNames) => {
     let count = 0
@@ -62,6 +121,8 @@ const Dangkylich = props => {
     return count;
   }
 
+
+
   const setSelectedShift = (dateDelta, shift) => {
     // let date = new Date();
     // date.setDate(nextMonday.getDate() + dateDelta);
@@ -70,26 +131,6 @@ const Dangkylich = props => {
     let date = add(nextMonday, { days: dateDelta }).yyyymmdd();  // nextDate(dateDelta + 1).yyyymmdd();
     selectedShift[date] = shift;
     console.log(selectedShift);
-  }
-
-  const openDatePicker = () => {
-    setShowDatePicker(true)
-  }
-  const onCancel = () => {
-    // You should close the modal in here
-    setShowDatePicker(false)
-  }
-  const onConfirm = (output) => {
-    const { startDate, startDateString, endDate, endDateString } = output
-    console.log(startDate.getTime())
-    console.log(startDateString)
-    console.log(endDate.getTime())
-    console.log(endDateString)
-    setDate({
-      startDateString,
-      endDateString
-    });
-    setShowDatePicker(false);
   }
 
   // util
@@ -112,39 +153,74 @@ const Dangkylich = props => {
     return text;
   }
 
-  const postRegistrationData = async () => {
+  const submitRegistrationData = async () => {
     let userInfo = await getUserInfo();
     let userId = userInfo.userID;
 
-    for (let date in selectedShift) {
-      // util
-      let shiftId = generateIdByNum(7);
-      console.log(shiftId);
+    let listDay = getListDayNextWeek();
+    let oldData = props.route.params["registrationData"];
 
+    for (let i = 0; i < 7; i++) {
+      if (oldData[i] == null && registrationSchedule[i].filter((value) => value).length == 0) {
 
-      let requestBody = {
-        "allday": false,
-        "date": date,
-        "registrationScheduleID": shiftId,
-        "shift1": selectedShift[date] == 1,
-        "shift2": selectedShift[date] == 2,
-        "shift3": selectedShift[date] == 3,
-        "userID": userId
-      };
+      } else {
+        let registrationScheduleID = oldData[i] == null? generateIdByNum(7) : oldData[i]["registrationScheduleID"]
+        let requestBody = {
+          "allday": false,
+          "date": listDay[i].yyyymmdd(),
+          "registrationScheduleID": registrationScheduleID,
+          "shift1": registrationSchedule[i][0],
+          "shift2": registrationSchedule[i][1],
+          "shift3": registrationSchedule[i][2],
+          "userID": userId
+        };
+        let method = oldData[i] == null ? "POST" : "PUT";
+        console.log(requestBody);
+        console.log(method);
+        const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+          method: method,
+          headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody),
+        });
+        console.log(response);
+      }
 
-      console.log(requestBody);
-
-      const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
-        method: 'POST',
-        headers: {
-          'Accept': '*/*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody),
-      });
     }
 
-    createAlert("Notification", "You have successfully registered schedule for next week!", "Trangchu");
+    createAlert("Notification", "Registration schedule is updated!", "Trangchu");
+
+    // for (let date in selectedShift) {
+    //   // util
+    //   let shiftId = generateIdByNum(7);
+    //   console.log(shiftId);
+
+
+    //   let requestBody = {
+    //     "allday": false,
+    //     "date": date,
+    //     "registrationScheduleID": shiftId,
+    //     "shift1": selectedShift[date] == 1,
+    //     "shift2": selectedShift[date] == 2,
+    //     "shift3": selectedShift[date] == 3,
+    //     "userID": userId
+    //   };
+
+    //   console.log(requestBody);
+
+    //   const response = await fetch("http://api.ngocsonak.xyz:8181/api/registrationschedule/create", {
+    //     method: 'POST',
+    //     headers: {
+    //       'Accept': '*/*',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(requestBody),
+    //   });
+    // }
+
+    // createAlert("Notification", "You have successfully registered schedule for next week!", "Trangchu");
   }
 
   return (
@@ -168,16 +244,6 @@ const Dangkylich = props => {
 
           </View>
           <View>
-            {/* <Button title={'open'} onPress={openDatePicker} /> */}
-            <DatePicker
-              dateStringFormat={'dd/MM'}
-              isVisible={showDatePicker}
-              mode={'range'}
-              onCancel={onCancel}
-              onConfirm={onConfirm}
-            >
-
-            </DatePicker>
           </View>
           <View style={[styles.container, { backgroundColor: 'black', height: 70 }]}>
             <Text style={{ color: 'white', fontFamily: 'Arial', fontSize: 20 }}> Details work schedule </Text>
@@ -195,32 +261,37 @@ const Dangkylich = props => {
 
             </View>
           </View>
-          <View style={[styles.viewsigup, { borderWidth: 2, height: 120 }]}>
-            
+
+          {registrationSchedule.map((item, index) => (
+            <View style={[styles.viewsigup, { borderWidth: 2, height: 120 }]} key={index}>
               <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
-                <Text style={[styles.textThu, { marginTop: 15 }]}>Monday </Text>
+                <Text style={[styles.textThu, { marginTop: 15 }]}>{listDay[index]}</Text>
               </View>
-            
-            <View style={{   flexDirection: 'row' }}>
-              {/* <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}> */}
-              <View ><CheckBox
-                title='Shift 1'
-                checked={true}
-              /></View>
+              <View style={{ flexDirection: 'row' }}>
+                {/* <View style={{ height: 35, width: 45, marginVertical: 10, marginLeft: 10, borderRadius: 10 }}> */}
+                <View ><CheckBox
+                  title='Shift 1'
+                  checked={item[0]}
+                  onPress={() => handlePressCheckbox(index, 0)}
+                /></View>
 
-              <CheckBox 
-              title='Shift 2'
-              checked={true}
-              />
-              <CheckBox
-                title='Shift 3'
-                checked={true}
-              />
-              {/* </View> */}
+                <CheckBox
+                  title='Shift 2'
+                  checked={item[1]}
+                  onPress={() => handlePressCheckbox(index, 1)}
+                />
+                <CheckBox
+                  title='Shift 3'
+                  checked={item[2]}
+                  onPress={() => handlePressCheckbox(index, 2)}
+                />
+                {/* </View> */}
+              </View>
             </View>
-          </View>
+          ))}
 
-          <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
+
+          {/* <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
               <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
                 <Text style={[styles.textThu, { marginTop: 15 }]}>Monday </Text>
@@ -245,8 +316,8 @@ const Dangkylich = props => {
                 />
               </View>
             </View>
-          </View>
-          <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
+          </View> */}
+          {/* <View style={[styles.viewsigup, { borderWidth: 2, height: 70, flexDirection: 'row' }]}>
             <View style={{ width: '20%', height: '100%' }}>
               <View style={{ backgroundColor: '#A1C639', height: 50, width: 80, marginVertical: 10, marginLeft: 1, borderRadius: 10 }}>
                 <Text style={[styles.textThu, { marginTop: 15 }]}>Tuesday </Text>
@@ -401,14 +472,14 @@ const Dangkylich = props => {
                 />
               </View>
             </View>
-          </View>
+          </View> */}
 
           <View style={[styles.container, { marginTop: 10 }]}>
             <Button title="Confirm" color="#a1C639"
               onPress={() => {
                 Alert.alert(
                   "Warning",
-                  "You cannot register another schedule after you submit. Do you wish to register schedule?",
+                  "Do you confirm to register schedule?",
                   [
                     // The "No" button
                     // Does nothing but dismiss the dialog when tapped
@@ -419,7 +490,7 @@ const Dangkylich = props => {
                     {
                       text: "Yes",
                       onPress: () => {
-                        postRegistrationData();
+                        submitRegistrationData();
                         console.log(2);
                       },
                     },
