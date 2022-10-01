@@ -96,6 +96,36 @@ const getWorkingHourData = async (userId) => {
     return listData;
 }
 
+const getTotalWorkingHourInMonth = async (userId) => {
+    // let check = false;
+    let startDate = new Date('2022-10-01');
+    startDate.setHours(0, 0, 0, 0);
+    let endDate = new Date('2022-10-31');
+    endDate.setHours(23, 59, 59, 0);
+    let listData = [];
+    await fetch(`http://api.ngocsonak.xyz:8181/api/workinghour/get-by-user-id?id=${userId}`, {
+        method: 'GET',
+        heaaders: {
+            Accept: '*/*',
+        }
+    }).then(response => response.json()).then(async (result) => {
+        // if (result.length == 0) check = false;
+        // else {
+        //     check = await getRegistrationDataForNextWeek(result);
+        // }
+        console.log(result);
+        for (let item of result) {
+            let itemDate = new Date(item.workSchedule.date);
+            if (itemDate >= startDate && itemDate <= endDate) {
+                listData.push(item);
+            }
+        }
+    }).catch(error => console.log('error', error));
+    let count = 0;
+    listData.map((item, index) => count += item.totalWorkingHour)
+    return count;
+}
+
 const getAssesmentData = async (userId) => {
     let assesment = {
         "assessmentID": "id",
@@ -111,27 +141,27 @@ const getAssesmentData = async (userId) => {
         "description": "Lam tot",
         "total": 80,
         "user": {
-          "userID": "bao",
-          "userName": "Quoc Bao",
-          "password": "123",
-          "fullName": "Nguyen Quoc Bao",
-          "phoneNumber": "0191238822",
-          "sex": "Nam",
-          "dayOfBirth": "20/10/1999",
-          "address": "Sky9",
-          "email": "bao@gmail.com",
-          "status": true,
-          "role": {
-            "id": "4",
-            "name": "EMPLOYEE_PARTIME"
-          },
-          "store": {
-            "storeID": "dxh",
-            "storeName": "Do Xuan Hop",
-            "address": "Do Xuan Hop"
-          }
+            "userID": "bao",
+            "userName": "Quoc Bao",
+            "password": "123",
+            "fullName": "Nguyen Quoc Bao",
+            "phoneNumber": "0191238822",
+            "sex": "Nam",
+            "dayOfBirth": "20/10/1999",
+            "address": "Sky9",
+            "email": "bao@gmail.com",
+            "status": true,
+            "role": {
+                "id": "4",
+                "name": "EMPLOYEE_PARTIME"
+            },
+            "store": {
+                "storeID": "dxh",
+                "storeName": "Do Xuan Hop",
+                "address": "Do Xuan Hop"
+            }
         }
-      };
+    };
     await fetch(`http://api.ngocsonak.xyz:8181/api/employeeassessment/get-by-user-id?id=${userId}`, {
         method: 'GET',
         heaaders: {
@@ -209,7 +239,7 @@ const getWorkScheduleForCurrentWeek = async (userId) => {
     }).then(response => response.json()).then(async (result) => {
         if (result.length > 0) {
             result.forEach(record => {
-                let recordDate = new Date(record.date); 
+                let recordDate = new Date(record.date);
                 if (recordDate >= nextMonday && recordDate <= nextSunday) data.push(record);
             })
         }
@@ -315,4 +345,4 @@ const getEmployeeRewardandDiscipline = async (userId) => {
     return listRewardAndDiscipline;
 }
 
-export { getAssesmentData, getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeRewardandDiscipline, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };
+export { getTotalWorkingHourInMonth, getAssesmentData, getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeRewardandDiscipline, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule };

@@ -9,6 +9,8 @@ import Submit from '../components/Submit';
 const Giolam = props => {
     let temp = props.route.params["workingHourData"];
     const [workingHourData, setWorkingHourData] = useState(temp);
+    let temp2 = props.route.params["totalWorkingHour"];
+    const [totalWorkingHour, setTotalWorkingHour] = useState(temp2);
     console.log(workingHourData);
     console.log('--------------------')
     let nextMonday = nextDate(1);
@@ -111,9 +113,9 @@ const Giolam = props => {
                     </View>
                 </View>
                 
-                {/* <View style={[styles.container, { backgroundColor: '#3366CC', height: 100, borderWidth: 1, borderColor: 'red', borderRadius: 50, width: '100%', alignSelf: 'center', marginTop: 10 }]}>
-                    <Text style={{ color: 'white', fontFamily: 'Arial', fontSize: 20 }}> Total Time In Month: 64</Text>
-                </View> */}
+                <View style={[styles.container, { backgroundColor: '#3366CC', height: 100, borderWidth: 1, borderColor: 'red', borderRadius: 50, width: '100%', alignSelf: 'center', marginTop: 10 }]}>
+                    <Text style={{ color: 'white', fontFamily: 'Arial', fontSize: 20 }}> Total Time In Month: {totalWorkingHour} hours</Text>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )

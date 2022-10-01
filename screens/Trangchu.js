@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { getUserInfo } from '../utils/AsyncStorage';
-import { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule, getAssesmentData } from '../utils/Employee';
+import { getWorkingHourData, updateWorkSchedule, getWorkScheduleForCurrentWeek, getEmployeeCertificate, getRegistrationData, isRegisteredDayOffForNextWeek, getRegistrationScheduleForNextWeek, updateRegistrationSchedule, getAssesmentData, getTotalWorkingHourInMonth } from '../utils/Employee';
 
 const createAlert = (title, message) =>
     Alert.alert(
@@ -60,8 +60,9 @@ const Trangchu = (props) => {
 
     const getWorkingHour = async () => {
         let workingHourData = await getWorkingHourData(userId);
+        let totalWorkingHour = await getTotalWorkingHourInMonth(userId);
         console.log(workingHourData);
-        props.navigation.push('Giolam', { workingHourData: workingHourData });
+        props.navigation.push('Giolam', { workingHourData: workingHourData, totalWorkingHour: totalWorkingHour });
     }
 
     const getUserSchedule = async () => {
